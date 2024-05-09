@@ -49,6 +49,8 @@ CONF_DEVICE_MODE_WHITE_MAX_KELVIN     = "max_kelvin"
 # CLIMATES
 CONF_DEVICE_CLIMATES                  = "climates"
 CONF_DEVICE_CLIMATE_TEMP_MODE         = "temp_mode"
+CONF_DEVICE_CLIMATE_FAN_MODE          = "fan_mode"
+CONF_DEVICE_CLIMATE_FAN_MODES         = "modes"
 
 # TEMP-MODE PARAMETER
 CONF_DEVICE_MODE_TEMP_MIN_TEMP        = "min_temperature"
@@ -145,7 +147,7 @@ CONFIG_SCHEMA = cv.Schema({
 
     cv.Optional(CONF_DEVICES, default=dict()): cv.All(dict({
     
-        cv.Optional(CONF_DEVICE_LIGHTS, default=[]): cv.All([dict({
+        cv.Optional(CONF_DEVICE_LIGHTS, default=[]): cv.ensure_list(dict({
             cv.Required(CONF_DEVICE_ENTRY_ID): cv.string,
             cv.Required(CONF_DEVICE_ENTRY_NAME): cv.string,
 
@@ -161,18 +163,19 @@ CONFIG_SCHEMA = cv.Schema({
                     cv.Optional(CONF_DEVICE_MODE_DIMM_MIN_BRIGHTNESS): cv.int_range(1, 100),
                     cv.Optional(CONF_DEVICE_MODE_DIMM_MAX_BRIGHTNESS): cv.int_range(1, 100)
                 })),
-                
+
                 cv.Optional(CONF_DEVICE_LIGHT_WHITE_MODE, default=dict()): cv.All(dict({
                     cv.Optional(CONF_DEVICE_MODE_ENABLE, default=False): cv.boolean,
                     cv.Optional(CONF_ROTARY_STEP_WIDTH): cv.int_range(1, 500),
                     cv.Optional(CONF_DEVICE_MODE_WHITE_MIN_KELVIN, default=DEFAULT_WHITE_MIN_KELVIN): cv.int_range(1000, 10000),
                     cv.Optional(CONF_DEVICE_MODE_WHITE_MAX_KELVIN, default=DEFAULT_WHITE_MAX_KELVIN): cv.int_range(1000, 10000)                    
                 }))
+               
             }))
-        })]),
+        })),
 
 
-        cv.Optional(CONF_DEVICE_CLIMATES, default=[]): cv.All([dict({
+        cv.Optional(CONF_DEVICE_CLIMATES, default=[]): cv.ensure_list(dict({
             cv.Required(CONF_DEVICE_ENTRY_ID): cv.string,
             cv.Required(CONF_DEVICE_ENTRY_NAME): cv.string,
 
@@ -181,12 +184,19 @@ CONFIG_SCHEMA = cv.Schema({
                     cv.Optional(CONF_ROTARY_STEP_WIDTH, default=DEFAULT_CLIMATE_ROTARY_STEP_WIDTH): cv.int_range(1, 500),
                     cv.Optional(CONF_DEVICE_MODE_TEMP_MIN_TEMP, default=DEFAULT_WHITE_MIN_TEMP): cv.int_range(0, 500),
                     cv.Optional(CONF_DEVICE_MODE_TEMP_MAX_TEMP, default=DEFAULT_WHITE_MAX_TEMP): cv.int_range(0, 500)
+                })),
+
+                cv.Optional(CONF_DEVICE_CLIMATE_FAN_MODE, default=dict()): cv.All(dict({
+                    cv.Optional(CONF_DEVICE_CLIMATE_FAN_MODES, default=[]): cv.ensure_list(cv.string),
+                    cv.Optional(CONF_ROTARY_STEP_WIDTH, default=1): cv.int_range(1, 5)                  
                 }))
+
             }))
-        })]),
+            
+        })),
 
 
-        cv.Optional(CONF_DEVICE_COVER, default=[]): cv.All([dict({
+        cv.Optional(CONF_DEVICE_COVER, default=[]): cv.ensure_list(dict({
             cv.Required(CONF_DEVICE_ENTRY_ID): cv.string,
             cv.Required(CONF_DEVICE_ENTRY_NAME): cv.string,
 
@@ -195,16 +205,16 @@ CONFIG_SCHEMA = cv.Schema({
                     cv.Optional(CONF_ROTARY_STEP_WIDTH): cv.int_range(1, 500),
                 }))
             }))
-        })]),
+        })),
 
 
-        cv.Optional(CONF_DEVICE_SWITCH, default=[]): cv.All([dict({
+        cv.Optional(CONF_DEVICE_SWITCH, default=[]): cv.ensure_list(dict({
             cv.Required(CONF_DEVICE_ENTRY_ID): cv.string,
             cv.Required(CONF_DEVICE_ENTRY_NAME): cv.string
-        })]),
+        })),
 
 
-        cv.Optional(CONF_DEVICE_FAN, default=[]): cv.All([dict({
+        cv.Optional(CONF_DEVICE_FAN, default=[]): cv.ensure_list(dict({
             cv.Required(CONF_DEVICE_ENTRY_ID): cv.string,
             cv.Required(CONF_DEVICE_ENTRY_NAME): cv.string,
 
@@ -214,10 +224,10 @@ CONFIG_SCHEMA = cv.Schema({
                     cv.Optional(CONF_CHANGEABLE_DIRECTION, default=False): cv.boolean
                 }))
             }))
-        })]),
+        })),
 
 
-        cv.Optional(CONF_DEVICE_MEDIA_PLAYER, default=[]): cv.All([dict({
+        cv.Optional(CONF_DEVICE_MEDIA_PLAYER, default=[]): cv.ensure_list(dict({
             cv.Required(CONF_DEVICE_ENTRY_ID): cv.string,
             cv.Required(CONF_DEVICE_ENTRY_NAME): cv.string,
 
@@ -228,17 +238,17 @@ CONFIG_SCHEMA = cv.Schema({
 
                 cv.Optional(CONF_DEVICE_MEDIA_PLAYER_SOURCE_MODE , default=dict()): cv.All(dict({
                     cv.Optional(CONF_ROTARY_STEP_WIDTH, default=DEFAULT_MEDIA_PLAYER_ROTARY_STEP_WIDTH): cv.int_range(1, 100),
-                    cv.Optional(CONF_MEDIA_PLAYER_SOURCES, default=[]): cv.All([dict({
+                    cv.Optional(CONF_MEDIA_PLAYER_SOURCES, default=[]): cv.ensure_list(dict({
                         cv.Required(CONF_NAME): cv.string,
                         cv.Required(CONF_CONTENT_ID): cv.string,
                         cv.Required(CONF_CONTENT_TYPE): cv.string,
-                    })])
+                    }))
                 })),
             }))
-        })]),
+        })),
 
 
-        cv.Optional(CONF_DEVICE_LOCK, default=[]): cv.All([dict({
+        cv.Optional(CONF_DEVICE_LOCK, default=[]): cv.ensure_list(dict({
             cv.Required(CONF_DEVICE_ENTRY_ID): cv.string,
             cv.Required(CONF_DEVICE_ENTRY_NAME): cv.string,
 
@@ -248,10 +258,10 @@ CONFIG_SCHEMA = cv.Schema({
                     cv.Optional(CONF_DEVICE_LOCK_OPEN_ON_BUTTON, default=False): cv.boolean
                 }))
             }))
-        })]),
+        })),
 
 
-        cv.Optional(CONF_DEVICE_NUMBER, default=[]): cv.All([dict({
+        cv.Optional(CONF_DEVICE_NUMBER, default=[]): cv.ensure_list(dict({
             cv.Required(CONF_DEVICE_ENTRY_ID): cv.string,
             cv.Required(CONF_DEVICE_ENTRY_NAME): cv.string,
 
@@ -261,10 +271,10 @@ CONFIG_SCHEMA = cv.Schema({
                     cv.Optional(CONF_DEVICE_NUMBER_UNIT): cv.string,
                 }))
             }))
-        })]),
+        })),
 
 
-        cv.Optional(CONF_DEVICE_TIMER, default=[]): cv.All([dict({
+        cv.Optional(CONF_DEVICE_TIMER, default=[]): cv.ensure_list(dict({
             cv.Required(CONF_DEVICE_ENTRY_ID): cv.string,
             cv.Required(CONF_DEVICE_ENTRY_NAME): cv.string,
 
@@ -273,7 +283,7 @@ CONFIG_SCHEMA = cv.Schema({
                     cv.Optional(CONF_ROTARY_STEP_WIDTH): cv.int_range(1, 500),
                 }))
             }))
-        })]),
+        })),
 
 
     }))

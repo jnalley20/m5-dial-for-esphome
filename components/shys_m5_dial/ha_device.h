@@ -135,6 +135,10 @@ namespace esphome
                 void setLocked(bool isLocked){
                     this->locked = isLocked;
                 }
+                
+                JsonObject getModeConfig(){
+                    return this->modeConfig;
+                }
 
                 void nextMode(){
                     if(currentModeIndex >= currentModeCount-1){

@@ -1,6 +1,7 @@
 #pragma once
 #include "ha_device.h"
 #include "ha_device_mode_climate_temperature.h"
+#include "ha_device_mode_climate_fan.h"
 
 namespace esphome
 {
@@ -9,6 +10,7 @@ namespace esphome
         class HaDeviceClimate: public esphome::shys_m5_dial::HaDevice {
             protected:
                 HaDeviceModeClimateTemperature*             modeTemp           = new HaDeviceModeClimateTemperature(*this);
+                HaDeviceModeClimateFan*                     modeFan            = new HaDeviceModeClimateFan(*this);
 
             public:
                 HaDeviceClimate(const std::string& entity_id, const std::string& name, const std::string& modes) : HaDevice(entity_id, name, modes) {}
@@ -33,7 +35,18 @@ namespace esphome
                         if (temp_mode.containsKey("max_temperature")) {
                             modeTemp->setMaxValue(temp_mode["max_temperature"].as<int>());
                         }                        
-                    }                    
+                    }
+
+                    if (this->modeConfig.containsKey("fan_mode")) {
+                        JsonObject fan_mode = this->modeConfig["fan_mode"];
+
+                        modeFan->loadFanModes(this->modeConfig);
+                        this->addMode(modeFan);                        
+
+                        if (fan_mode.containsKey("rotary_step_width")) {
+                            modeFan->setRotaryStepWidth(fan_mode["rotary_step_width"].as<int>());
+                        }
+                    }
                 }
 
         };
