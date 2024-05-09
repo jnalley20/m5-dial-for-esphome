@@ -83,7 +83,7 @@ shys_m5_dial:
     switches:
       - entity: switch.my_switch
         name: Switch 1
-        
+
     climates:
       - entity: climate.my_climate1
         name: Heater
@@ -92,7 +92,20 @@ shys_m5_dial:
             rotary_step_width: 1
             min_temperature: 4
             max_temperature: 30
-            
+      - entity: climate.my_climate1
+        name: Air Conditioning
+        modes:
+          temp_mode:
+            rotary_step_width: 1
+            min_temperature: 16
+            max_temperature: 24
+          fan_mode:
+            rotary_step_width: 1
+            modes:
+              - auto
+              - low
+              - high
+
     covers:
       - entity: cover.my_cover1
         name: Cover 1
@@ -445,6 +458,47 @@ Sets the minimum temperature that can be set for this climate entity on the Dial
   
 **max_temperature (optional)** *Default: 30*  
 Sets the maximum temperature that can be set for this climate entity on the Dial.
+  
+&nbsp;  
+  
+#### fan_mode
+The Fan Mode allows controlling the fan mode of the Climate entity.  
+The mode is selected using the rotary encoder and activated by pressing the button.  
+  
+Typically, the entry `fan_mode: {}` under `modes:` is sufficient to activate this fan control.  
+The mode automatically reads the possible values from the `fan_modes` attribute of the entity.  
+  
+**Code:**
+```
+shys_m5_dial:
+  ...
+  devices:
+    climates:
+      - entity: climate.my_climate2
+        name: Heater
+        modes:
+          fan_mode: {}
+      - entity: climate.my_climate1
+        name: Heater
+        modes:
+          fan_mode:
+            rotary_step_width: 1
+            modes:
+              - auto
+              - low
+              - medium
+              - high
+```
+  
+**rotary_step_width (optional)** *Default: 1*  
+Specifies the general step width by which the value changes per step when using the rotary encoder.  
+Even for the Fan Mode, 1 is the default, regardless of the general standard set in the component.  
+*Valid values 1 - 5*  
+  
+**modes (optional)**  
+Modes allow specifying a list of available modes.  
+If modes are specified here, automatic detection of modes will not occur anymore.  
+This parameter can be used to restrict the available modes or if the climate entity does not provide its modes via the "fan_modes" attribute.  
   
 &nbsp;  
   

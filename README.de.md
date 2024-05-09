@@ -83,7 +83,7 @@ shys_m5_dial:
     switches:
       - entity: switch.my_switch
         name: Switch 1
-        
+
     climates:
       - entity: climate.my_climate1
         name: Heater
@@ -92,7 +92,20 @@ shys_m5_dial:
             rotary_step_width: 1
             min_temperature: 4
             max_temperature: 30
-            
+      - entity: climate.my_climate1
+        name: Air Conditioning
+        modes:
+          temp_mode:
+            rotary_step_width: 1
+            min_temperature: 16
+            max_temperature: 24
+          fan_mode:
+            rotary_step_width: 1
+            modes:
+              - auto
+              - low
+              - high
+
     covers:
       - entity: cover.my_cover1
         name: Cover 1
@@ -448,6 +461,48 @@ Legt die maximale Temperatur fest, die am Dial für diese Climate-Entität einge
   
 &nbsp;  
   
+#### fan_mode
+Mit Hilfe des Fan-Mode lässt sich der Lüfter-Modus der Climate-Entität regeln.  
+Über den Drehregler wird der Modus ausgewählt und durch einen Druck auf den Button aktiviert.  
+  
+In der Regel reicht der Eintrag `fan_mode: {}` unter `modes:` um diese Lüftersteuerung zu aktivieren.  
+Der Modus liest die möglichen Werte automatisch aus dem Attribut `fan_modes` der Entität aus.  
+  
+**Code:**
+```
+shys_m5_dial:
+  ...
+  devices:
+    climates:
+      - entity: climate.my_climate2
+        name: Heater
+        modes:
+          fan_mode: {}
+      - entity: climate.my_climate1
+        name: Heater
+        modes:
+          fan_mode:
+            rotary_step_width: 1
+            modes:
+              - auto
+              - low
+              - medium
+              - high
+```
+  
+**rotary_step_width (optional)** *Default: 1*  
+Gibt die allgemeine Schrittweite an, um die der Wert bei Verwendung des Drehreglers pro Schritt verändert wird.  
+Auch beim Fan-Mode gilt die 1 als Default, egal was als allgemeiner Standard in der Component eingestellt wurde.  
+*Gültige Werte 1 - 5*  
+  
+**modes (optional)**  
+Über Modes lässt sich eine Liste an zur Verfügung stehenden Modi festlegen.  
+Werden hier Modi angegeben, findet keine automatische Ermittlung der Modi mehr statt.  
+Dieser Parameter kann also dazu genutzt werden, die zur Verfügung stehenden Modi einzuschränken oder wenn die climate-Entität seine Modi nicht über das Attribut "fan_modes" bereit stellt.  
+  
+&nbsp;  
+  
+
 ------
   
 ## **COVER**
