@@ -121,13 +121,15 @@ namespace esphome
                 }
 
                 void setDirection(const std::string& newDirection){
-                    if (strcmp(newDirection.c_str(), FAN_DIRECTION_FORWARD) == 0){
-                        this->direction = FAN_DIRECTION_FORWARD;
-                    } else if (strcmp(newDirection.c_str(), FAN_DIRECTION_REVERSE) == 0){
-                        this->direction = FAN_DIRECTION_REVERSE;
-                    }
+                    if(changeableDirection){
+                        if (strcmp(newDirection.c_str(), FAN_DIRECTION_FORWARD) == 0){
+                            this->direction = FAN_DIRECTION_FORWARD;
+                        } else if (strcmp(newDirection.c_str(), FAN_DIRECTION_REVERSE) == 0){
+                            this->direction = FAN_DIRECTION_REVERSE;
+                        }
 
-                    displayRefreshNeeded = true;
+                        displayRefreshNeeded = true;
+                    }
                     
                     ESP_LOGD("DEVICE", "set direction: %s", this->direction);
                 }
