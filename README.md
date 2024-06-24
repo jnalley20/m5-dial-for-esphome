@@ -37,7 +37,7 @@ substitutions:
 
 packages:
   m5_tough_package:
-    url: https://github.com/SmartHome-yourself/m5-dial-for-esphome
+    url: https://github.com/jnalley20/m5-dial-for-esphome
     ref: main
     file: shys-m5-dial.yaml
     refresh: 1h
