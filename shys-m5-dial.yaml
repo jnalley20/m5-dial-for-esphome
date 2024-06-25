@@ -46,11 +46,3 @@ rc522_i2c:
   - id: nfc_reader
     i2c_id: internal_i2c
     address: 0x28
-
-output:
-  - platform: ledc
-    pin: GPIO3
-    id: buzzer
-
-rtttl:
-  output: buzzer
