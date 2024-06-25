@@ -36,13 +36,3 @@ esp32:
     type: arduino
 
 improv_serial:
-
-i2c:
-  - id: internal_i2c
-    sda: GPIO11
-    scl: GPIO12
-
-rc522_i2c:
-  - id: nfc_reader
-    i2c_id: internal_i2c
-    address: 0x28
