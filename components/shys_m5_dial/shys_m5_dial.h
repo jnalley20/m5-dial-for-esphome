@@ -51,11 +51,11 @@ namespace esphome
       
       int lastLoop = 0;
 
-      bool enableRFID = true;
+      //bool enableRFID = true;
       bool enableEncoder = true;
 
       M5DialDisplay* m5DialDisplay = new M5DialDisplay();
-      M5DialRfid* m5DialRfid = new M5DialRfid();
+      //M5DialRfid* m5DialRfid = new M5DialRfid();
       M5DialRotary* m5DialRotary = new M5DialRotary();
       M5DialTouch* m5DialTouch = new M5DialTouch();
       M5DialEEPROM* m5DialEEPROM = new M5DialEEPROM();
@@ -305,9 +305,9 @@ namespace esphome
         using std::placeholders::_2;
 
         ESP_LOGI("DEVICE", "Initialisierung...");
-
-        auto cfg = M5.config();
-        M5Dial.begin(cfg, enableEncoder, enableRFID);
+        //Disabling NFC for native control.
+        //auto cfg = M5.config();
+        //M5Dial.begin(cfg, enableEncoder, enableRFID);
 
         ESP_LOGI("DEVICE", "Register Callbacks...");
         m5DialRotary->on_rotary_left(std::bind(&esphome::shys_m5_dial::ShysM5Dial::turnRotaryLeft, this));
