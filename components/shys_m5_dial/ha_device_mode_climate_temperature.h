@@ -54,7 +54,7 @@ namespace esphome
 
             public:
                 HaDeviceModeClimateTemperature(HaDevice& device) : HaDeviceMode(device){
-                    this->maxValue = 40;
+                    this->maxValue = 99; // it's F not C
                 }
 
                 void refreshDisplay(M5DialDisplay& display, bool init) override {
