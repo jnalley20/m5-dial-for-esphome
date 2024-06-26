@@ -17,8 +17,10 @@ namespace esphome
                         M5Dial.Display.clear();
 
                         Serial.print(F("PICC type: "));
+                        ESP_LOGD("DEVICE", "PICC type: ");
                         uint8_t piccType = M5Dial.Rfid.PICC_GetType(M5Dial.Rfid.uid.sak);
                         Serial.println(M5Dial.Rfid.PICC_GetTypeName(piccType));
+                        ESP_LOGD("DEVICE", M5Dial.Rfid.PICC_GetTypeName(piccType));
 
                         // Check is the PICC of Classic MIFARE type
                         if (piccType != MFRC522::PICC_TYPE_MIFARE_MINI &&
