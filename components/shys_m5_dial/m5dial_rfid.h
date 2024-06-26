@@ -11,7 +11,6 @@ namespace esphome
 
             public:
                 void handleRfId(){
-                        ESP_LOGD("DEVICE", "handleRfId Loop");
                     if (M5Dial.Rfid.PICC_IsNewCardPresent() &&
                         M5Dial.Rfid.PICC_ReadCardSerial()) 
                     {
@@ -50,6 +49,7 @@ namespace esphome
                                                 M5Dial.Display.height() / 2 + 30);
                         Serial.println();
                 }
+                ESP_LOGD("DEVICE", "handleRfId Loop");
 
         };
     }
