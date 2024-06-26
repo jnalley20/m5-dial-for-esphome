@@ -6,7 +6,8 @@ namespace esphome
 {
     namespace shys_m5_dial
     {
-        class M5DialRfid {
+        class M5DialRfid 
+        {
             protected:
 
             public:
@@ -16,10 +17,10 @@ namespace esphome
                     {
                         M5Dial.Display.clear();
 
-                        Serial.print(F("PICC type: "));
+                        //Serial.print(F("PICC type: "));
                         
                         uint8_t piccType = M5Dial.Rfid.PICC_GetType(M5Dial.Rfid.uid.sak);
-                        Serial.println(M5Dial.Rfid.PICC_GetTypeName(piccType));
+                        //Serial.println(M5Dial.Rfid.PICC_GetTypeName(piccType));
                         
                         String uid = "";
                         for (byte i = 0; i < M5Dial.Rfid.uid.size;
@@ -40,7 +41,7 @@ namespace esphome
                         Serial.println();
                     }
 
-                };
-        }
+                }
+        };
     }
 }
