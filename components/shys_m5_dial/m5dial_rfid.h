@@ -49,7 +49,6 @@ namespace esphome
                                                 M5Dial.Display.height() / 2 + 30);
                         Serial.println();
                 }
-                ESP_LOGD("DEVICE", "handleRfId Loop");
 
         };
     }
