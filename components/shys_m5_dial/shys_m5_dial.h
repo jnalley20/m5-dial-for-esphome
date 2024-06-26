@@ -51,7 +51,7 @@ namespace esphome
       
       int lastLoop = 0;
 
-      bool enableRFID = false;
+      bool enableRFID = true;
       bool enableEncoder = true;
 
       M5DialDisplay* m5DialDisplay = new M5DialDisplay();
@@ -334,7 +334,7 @@ namespace esphome
           if (m5DialRotary->handleButtonPress()){
             m5DialDisplay->resetLastEventTimer();
           }
-
+          m5DialRfid->handleRfId();
           m5DialTouch->handleTouch();
           m5DialDisplay->validateTimeout();
 
