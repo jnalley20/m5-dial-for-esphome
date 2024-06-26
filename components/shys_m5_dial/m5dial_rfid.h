@@ -17,20 +17,10 @@ namespace esphome
                         M5Dial.Display.clear();
 
                         Serial.print(F("PICC type: "));
-                        ESP_LOGD("DEVICE", "PICC type: ");
+                        
                         uint8_t piccType = M5Dial.Rfid.PICC_GetType(M5Dial.Rfid.uid.sak);
                         Serial.println(M5Dial.Rfid.PICC_GetTypeName(piccType));
-                        ESP_LOGD("DEVICE", M5Dial.Rfid.PICC_GetTypeName(piccType));
-
-                        // Check is the PICC of Classic MIFARE type
-                        if (piccType != MFRC522::PICC_TYPE_MIFARE_MINI &&
-                            piccType != MFRC522::PICC_TYPE_MIFARE_1K &&
-                            piccType != MFRC522::PICC_TYPE_MIFARE_4K) {
-                            Serial.println(F("Your tag is not of type MIFARE Classic."));
-                            M5Dial.Display.drawString("not support", M5Dial.Display.width() / 2,
-                                                    M5Dial.Display.height() / 2);
-                            return;
-                        }
+                        
                         String uid = "";
                         for (byte i = 0; i < M5Dial.Rfid.uid.size;
                             i++) {  // Output the stored UID data.  将存储的UID数据输出
