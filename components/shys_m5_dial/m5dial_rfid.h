@@ -38,8 +38,9 @@ namespace esphome
                         M5Dial.Display.drawString(uid, M5Dial.Display.width() / 2,
                                                 M5Dial.Display.height() / 2 + 30);
                         Serial.println();
-                }
+                    }
 
-        };
+                }
+        }
     }
 }
