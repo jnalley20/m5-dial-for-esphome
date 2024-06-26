@@ -11,6 +11,7 @@ namespace esphome
 
             public:
                 void handleRfId(){
+                        ESP_LOGD("DEVICE", "handleRfId Loop");
                     if (M5Dial.Rfid.PICC_IsNewCardPresent() &&
                         M5Dial.Rfid.PICC_ReadCardSerial()) 
                     {
