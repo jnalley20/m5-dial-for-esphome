@@ -9,12 +9,11 @@ namespace esphome
         class M5DialRfid {
             protected:
                 int currentLoop = 0;
-                int checkOnLoop = 40;
+                int checkOnLoop = 200;
             public:
                 void handleRfId(){
                     if(currentLoop == checkOnLoop){
                         currentLoop = 0;
-                        esphome::delay(100);
                         if (M5Dial.Rfid.PICC_IsNewCardPresent() &&
                             M5Dial.Rfid.PICC_ReadCardSerial()) 
                         {
