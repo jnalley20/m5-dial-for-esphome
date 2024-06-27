@@ -17,7 +17,7 @@ namespace esphome
                         if (M5Dial.Rfid.PICC_IsNewCardPresent() &&
                             M5Dial.Rfid.PICC_ReadCardSerial()) 
                         {
-//                            M5Dial.Display.clear();
+                            M5Dial.Display.clear();// This will clear the clock tick marks...
 
                             Serial.print(F("PICC type: "));
                             
