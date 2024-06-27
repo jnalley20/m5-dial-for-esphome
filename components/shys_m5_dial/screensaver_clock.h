@@ -48,7 +48,6 @@ namespace esphome
                                         wd[dt.date.weekDay], dt.time.hours, dt.time.minutes,
                                         dt.time.seconds);
 
-                    }
                 }
 
                 void paintHourHand(M5DialDisplay& display){
