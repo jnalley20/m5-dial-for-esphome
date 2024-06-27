@@ -30,7 +30,6 @@ external_components:
 dashboard_import:
   package_import_url: github://SmartHome-yourself/jnalley20/shys-m5-dial.yaml@patch-1
   import_full_config: false
-  refresh: 1s
 
 esp32:
   board: esp32-s3-devkitc-1
