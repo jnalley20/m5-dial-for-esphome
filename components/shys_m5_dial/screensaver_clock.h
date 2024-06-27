@@ -39,7 +39,7 @@ namespace esphome
                                                 "Thr", "Fri", "Sat"};
                     auto dt = M5Dial.Rtc.getDateTime();
                     M5Dial.Display.setCursor(0, 70);
-                    M5Dial.Display.printf("RTC   UTC  :%04d/%02d/%02d (%s)  %02d:%02d:%02d",
+                    M5Dial.Display.printf("UTC :%04d/%02d/%02d (%s)  %02d:%02d:%02d",
                                         dt.date.year, dt.date.month, dt.date.date,
                                         wd[dt.date.weekDay], dt.time.hours, dt.time.minutes,
                                         dt.time.seconds);
