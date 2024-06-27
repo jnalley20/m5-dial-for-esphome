@@ -48,31 +48,6 @@ namespace esphome
                                         wd[dt.date.weekDay], dt.time.hours, dt.time.minutes,
                                         dt.time.seconds);
 
-                    /// ESP32 internal timer
-                    auto t = time(nullptr);
-                    {
-                        auto tm = gmtime(&t);  // for UTC.
-                        Serial.printf("UTC :%04d/%02d/%02d (%s)  %02d:%02d:%02d\r\n",
-                                    tm->tm_year + 1900, tm->tm_mon + 1, tm->tm_mday,
-                                    wd[tm->tm_wday], tm->tm_hour, tm->tm_min, tm->tm_sec);
-                        M5Dial.Display.setCursor(0, 20);
-                        M5Dial.Display.printf("UTC  :%04d/%02d/%02d (%s)  %02d:%02d:%02d",
-                                            tm->tm_year + 1900, tm->tm_mon + 1, tm->tm_mday,
-                                            wd[tm->tm_wday], tm->tm_hour, tm->tm_min,
-                                            tm->tm_sec);
-                    }
-
-                    {
-                        auto tm = localtime(&t);  // for local timezone.
-                        Serial.printf("CT :%s:%04d/%02d/%02d (%s)  %02d:%02d:%02d\r\n",
-                                    "UTC-5", tm->tm_year + 1900, tm->tm_mon + 1,
-                                    tm->tm_mday, wd[tm->tm_wday], tm->tm_hour, tm->tm_min,
-                                    tm->tm_sec);
-                        M5Dial.Display.setCursor(0, 40);
-                        M5Dial.Display.printf("CT: %s:%04d/%02d/%02d (%s)  %02d:%02d:%02d",
-                                            "UTC-5", tm->tm_year + 1900, tm->tm_mon + 1,
-                                            tm->tm_mday, wd[tm->tm_wday], tm->tm_hour,
-                                            tm->tm_min, tm->tm_sec);
                     }
                 }
 
