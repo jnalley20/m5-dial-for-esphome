@@ -14,7 +14,7 @@ namespace esphome
                 void handleRfId(){
                     if(currentLoop == checkOnLoop){
                         currentLoop = 0;
-                        if (M5Dial.Rfid.PICC_IsNewCardPresent() ||
+                        if (M5Dial.Rfid.PICC_IsNewCardPresent() &&
                             M5Dial.Rfid.PICC_ReadCardSerial()) 
                         {
 //                            M5Dial.Display.clear();
