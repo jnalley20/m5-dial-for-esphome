@@ -330,11 +330,11 @@ namespace esphome
       void doLoop(){
         if(api::global_api_server->is_connected()){
           m5DialRotary->handleRotary();
-          m5DialRfid->handleRfId();
 
           if (m5DialRotary->handleButtonPress()){
             m5DialDisplay->resetLastEventTimer();
           }
+          m5DialRfid->handleRfId();
           m5DialTouch->handleTouch();
           m5DialDisplay->validateTimeout();
 
