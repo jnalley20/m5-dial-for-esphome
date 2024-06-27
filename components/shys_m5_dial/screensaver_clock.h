@@ -65,12 +65,12 @@ namespace esphome
                     {
                         auto tm = localtime(&t);  // for local timezone.
                         Serial.printf("CT :%s:%04d/%02d/%02d (%s)  %02d:%02d:%02d\r\n",
-                                    NTP_TIMEZONE, tm->tm_year + 1900, tm->tm_mon + 1,
+                                    "UTC-5", tm->tm_year + 1900, tm->tm_mon + 1,
                                     tm->tm_mday, wd[tm->tm_wday], tm->tm_hour, tm->tm_min,
                                     tm->tm_sec);
                         M5Dial.Display.setCursor(0, 40);
                         M5Dial.Display.printf("CT: %s:%04d/%02d/%02d (%s)  %02d:%02d:%02d",
-                                            NTP_TIMEZONE, tm->tm_year + 1900, tm->tm_mon + 1,
+                                            "UTC-5", tm->tm_year + 1900, tm->tm_mon + 1,
                                             tm->tm_mday, wd[tm->tm_wday], tm->tm_hour,
                                             tm->tm_min, tm->tm_sec);
                     }
