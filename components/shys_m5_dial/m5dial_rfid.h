@@ -9,7 +9,7 @@ namespace esphome
         class M5DialRfid {
             protected:
                 int currentLoop = 0;
-                int checkOnLoop = 200;
+                int checkOnLoop = 50;
             public:
                 void handleRfId(){
                     if(currentLoop == checkOnLoop){
