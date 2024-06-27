@@ -334,7 +334,7 @@ namespace esphome
           if (m5DialRotary->handleButtonPress()){
             m5DialDisplay->resetLastEventTimer();
           }
-          m5DialRfid->handleRfId();
+          //m5DialRfid->handleRfId();
           m5DialTouch->handleTouch();
           m5DialDisplay->validateTimeout();
 
