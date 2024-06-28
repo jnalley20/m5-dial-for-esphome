@@ -663,7 +663,7 @@ namespace esphome
                     esphome::api::HomeassistantServiceResponse resp;
                     esphome::api::HomeassistantServiceMap resp_kv;
 
-                    resp.service = "homeassistant.tag_scanned";
+                    resp.service = "esphome.tag_scanned";
                     
                     resp_kv.key = "tag_id";
                     resp_kv.value = tag.c_str();
