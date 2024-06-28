@@ -1,9 +1,6 @@
 #pragma once
 #include "esphome.h"
 #include "esphome/core/automation.h"
-#include "src/esphome/components/shys_m5_dial/nfc/nfc_tag.h"
-#include "src/esphome/components/shys_m5_dial/nfc/nfc.h"
-#include "src/esphome/components/shys_m5_dial/nfc/automation.h"
 #include "esp_log.h"
 
 #include "globals.h"
@@ -326,15 +323,9 @@ namespace esphome
 
         m5DialDisplay->on_display_refresh(std::bind(&esphome::shys_m5_dial::ShysM5Dial::refreshDisplay, this, _1));
 
-        //m5DialRfid->on_tag_scanned(std::bind(&esphome::shys_m5_dial::ShysM5Dial::scanTag, this, _1));
-        m5DialRfid->nfcid_scanned(std::bind(&esphome::shys_m5_dial::ShysM5Dial::nfcScanTag, this, _1));
+        m5DialRfid->on_tag_scanned(std::bind(&esphome::shys_m5_dial::ShysM5Dial::scanTag, this, _1));
 
         this->registerServices();
-      }
-      void nfcScanTag(std::vector<uint8_t> nfcTag){
-        auto tag = this->read_tag_(nfcTag);
-        for (auto *trigger : this->triggers_ontag_)
-          trigger->process(tag);
       }
       // void sendScannedTag(const char* tag){
       //           //const uint8_t* tag1 = reinterpret_cast<const uint8_t*>(tag);
@@ -347,10 +338,10 @@ namespace esphome
       //             trigger->process(tag);
       //       }
 
-      // void scanTag(const char* tag){
-      //     M5Dial.Speaker.tone(8000, 20);
-      //     sendScannedTag(tag);
-      // }
+      void scanTag(const char* tag){
+          M5Dial.Speaker.tone(8000, 20);
+          //sendScannedTag(tag);
+      }
       void register_ontag_trigger(nfc::NfcOnTagTrigger *trig) { this->triggers_ontag_.push_back(trig); }
       std::vector<nfc::NfcOnTagTrigger *> triggers_ontag_;
       std::unique_ptr<nfc::NfcTag> ShysM5Dial::read_tag_(std::vector<uint8_t> &uid) {

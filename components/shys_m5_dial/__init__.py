@@ -133,12 +133,6 @@ CONFIG_SCHEMA = cv.Schema({
     cv.GenerateID(): cv.declare_id(ShysM5Dial),
     cv.Optional(CONF_NAME, default=DEFAULT_NAME): cv.string,
 
-    cv.Optional(CONF_ON_TAG): automation.validate_automation(
-            {
-                cv.GenerateID(CONF_TRIGGER_ID): cv.declare_id(nfc.NfcOnTagTrigger),
-            }
-        ),
-
     cv.Optional(CONF_SCREEN_OFF_TIME, default=DEFAULT_SCREEN_OFF_TIME): cv.int_range(0, 999999),
     cv.Optional(CONF_SCREENSAVER, default=DEFAULT_SCREENSAVER): cv.one_of(*SCREENSAVER, lower=True),
     cv.Optional(CONF_LONG_PRESS_DURATION, default=DEFAULT_LONG_PRESS_DURATION): cv.int_range(0, 5000),
@@ -299,13 +293,6 @@ CONFIG_SCHEMA = cv.Schema({
 async def to_code(config):
     var = cg.new_Pvariable(config[CONF_ID])
     await cg.register_component(var, config)
-
-    for conf in config.get(CONF_ON_TAG, []):
-        trigger = cg.new_Pvariable(conf[CONF_TRIGGER_ID])
-        cg.add(var.register_ontag_trigger(trigger))
-        await automation.build_automation(
-            trigger, [(cg.std_string, "x"), (nfc.NfcTag, "tag")], conf
-        )
 
     if CONF_SCREEN_OFF_TIME in config:
         screenOffTime = config[CONF_SCREEN_OFF_TIME]
