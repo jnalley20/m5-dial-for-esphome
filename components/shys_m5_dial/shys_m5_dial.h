@@ -58,7 +58,6 @@ namespace esphome
       bool enableEncoder = true;
 
       M5DialDisplay* m5DialDisplay = new M5DialDisplay();
-      M5DialRfid* m5DialRfid = new M5DialRfid();
       M5DialRotary* m5DialRotary = new M5DialRotary();
       M5DialTouch* m5DialTouch = new M5DialTouch();
       M5DialEEPROM* m5DialEEPROM = new M5DialEEPROM();
@@ -323,17 +322,10 @@ namespace esphome
 
         m5DialDisplay->on_display_refresh(std::bind(&esphome::shys_m5_dial::ShysM5Dial::refreshDisplay, this, _1));
 
-        m5DialRfid->on_tag_scanned(std::bind(&esphome::shys_m5_dial::ShysM5Dial::scanTag, this, _1));
 
         this->registerServices();
       }
       
-      void scanTag(const char* tag){
-            M5Dial.Speaker.tone(8000, 20);
-            const uint8_t* rfidtag = reinterpret_cast<const uint8_t*>(tag);
-            for (auto *trigger : this->triggers_ontag_)
-            trigger->process(rfidtag);
-        }
 
      /**
       * 
@@ -345,7 +337,6 @@ namespace esphome
           if (m5DialRotary->handleButtonPress()){
             m5DialDisplay->resetLastEventTimer();
           }
-          m5DialRfid->handleRfId();
           m5DialTouch->handleTouch();
           m5DialDisplay->validateTimeout();
 
