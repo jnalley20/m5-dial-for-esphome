@@ -19,15 +19,7 @@ namespace esphome
             return std::string(buf);
         }
         std::string format_uid2(const char* &uid) {
-            char buf[32];
-            int offset = 0;
-            for (size_t i = 0; i < uid.size(); i++) {
-                const char *format = "%02X";
-                if (i + 1 < uid.size())
-                format = "%02X-";
-                offset += sprintf(buf + offset, format, uid[i]);
-            }
-            return std::string(buf);
+            return std::string(uid.c_str());
         }
 
         /**
