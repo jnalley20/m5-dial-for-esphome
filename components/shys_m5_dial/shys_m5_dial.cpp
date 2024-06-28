@@ -18,6 +18,7 @@ namespace esphome
             }
             return std::string(buf);
         }
+        M5DialRfid* m5DialRfid = new M5DialRfid();
 
         /**
          * @brief SETUP
@@ -27,6 +28,7 @@ namespace esphome
         void ShysM5Dial::setup()
         {
             ShysM5Dial::initDevice();
+            m5DialRfid->on_tag_scanned(std::bind(&esphome::shys_m5_dial::scanTag, this, _1));
             ESP_LOGI("log", "%s", "M5 is initialized");
         }
 
@@ -41,6 +43,7 @@ namespace esphome
             M5Dial.update();
             esphome::delay(1);
             ShysM5Dial::doLoop();
+            m5DialRfid->handleRfId();
             esphome::delay(1);
         }
 
@@ -58,7 +61,7 @@ namespace esphome
         
         void M5RC522Trigger::process(std::vector<uint8_t> &data) { this->trigger(format_uid(data)); }
 
-        void ShysM5Dial::scanTag(const char* tag){
+        void scanTag(const char* tag){
             M5Dial.Speaker.tone(8000, 20);
             const uint8_t* rfidtag = reinterpret_cast<const uint8_t*>(tag);
             for (auto *trigger : this->triggers_ontag_)
