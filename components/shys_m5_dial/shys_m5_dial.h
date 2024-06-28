@@ -377,20 +377,10 @@ namespace esphome
         for (auto *trigger : this->triggers_ontag_)
           trigger->process(rfid_uid);
       }
-      void RC522Trigger::process(std::vector<uint8_t> &data) { this->trigger(format_uid(data)); }
-      std::string format_uid(std::vector<uint8_t> &uid) {
-          char buf[32];
-          int offset = 0;
-          for (size_t i = 0; i < uid.size(); i++) {
-              const char *format = "%02X";
-              if (i + 1 < uid.size())
-              format = "%02X-";
-              offset += sprintf(buf + offset, format, uid[i]);
-          }
-          return std::string(buf);
-      }
+      
       void register_ontag_trigger(RC522Trigger *trig) { this->triggers_ontag_.push_back(trig); }
       std::vector<RC522Trigger *> triggers_ontag_;
+      
      /**
       * 
       */
@@ -515,6 +505,11 @@ namespace esphome
       }
 
 
+    };
+      
+    class RC522Trigger : public Trigger<std::string> {
+     public:
+      void process(std::vector<uint8_t> &data);
     };
   }
 }
