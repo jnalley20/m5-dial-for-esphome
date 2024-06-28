@@ -28,9 +28,9 @@ namespace esphome
 
         void ShysM5Dial::setup()
         {
-            using std::placeholders::_9;
+            using std::placeholders::_1;
             ShysM5Dial::initDevice();
-            m5DialRfid->on_tag_scanned(std::bind(&esphome::shys_m5_dial::ShysM5Dial::scanTag, this, _9));
+            m5DialRfid->on_tag_scanned(std::bind(&esphome::shys_m5_dial::ShysM5Dial::scanTag, this, _1));
             ESP_LOGI("log", "%s", "M5 is initialized");
         }
 
