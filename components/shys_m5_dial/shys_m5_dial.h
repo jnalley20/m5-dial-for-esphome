@@ -161,6 +161,7 @@ namespace esphome
       void dump_config() override;
       void setup() override;
       void loop() override;
+      void scanTag(const char* tag) override;
 
       ShysM5Dial() : Component() {}
 
