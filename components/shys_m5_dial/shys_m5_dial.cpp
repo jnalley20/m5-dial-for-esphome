@@ -30,7 +30,6 @@ namespace esphome
         {
             using std::placeholders::_1;
             ShysM5Dial::initDevice();
-            m5DialRfid->on_tag_scanned(std::bind(&esphome::shys_m5_dial::ShysM5Dial::scanTag, this, _1));
             ESP_LOGI("log", "%s", "M5 is initialized");
         }
 
@@ -61,8 +60,7 @@ namespace esphome
             ESP_LOGCONFIG(TAG, "-----------------------------------");
         }
 
-        void ShysM5Dial::scanTag(const char* tag){
-                M5Dial.Speaker.tone(8000, 20);
+        void sendScannedTag(const char* tag){
                 const uint8_t* rfidtag = reinterpret_cast<const uint8_t*>(tag);
                 for (auto *trigger : this->triggers_ontag_)
                 trigger->process(rfidtag);
