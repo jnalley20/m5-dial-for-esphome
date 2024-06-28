@@ -660,20 +660,23 @@ namespace esphome
 //              RFiD Tag Scanned
 // ---------------------------------
                 void sendTagScanned(const std::string& tag) {
-                    esphome::api::HomeassistantServiceResponse resp;
-                    esphome::api::HomeassistantServiceMap resp_kv;
+                    // esphome::api::HomeassistantServiceResponse resp;
+                    // esphome::api::HomeassistantServiceMap resp_kv;
 
-                    resp.service = "homeassistant.tag_scanned";
+                    // resp.service = "homeassistant.tag_scanned";
                     
-                    resp_kv.key = "device_id";
-                    resp_kv.value = "93d872ca49df6969";
-                    resp.data.push_back(resp_kv);
+                    // resp_kv.key = "device_id";
+                    // resp_kv.value = "93d872ca49df6969";
+                    // resp.data.push_back(resp_kv);
 
-                    resp_kv.key = "tag_id";
-                    resp_kv.value = tag.c_str();
-                    resp.data.push_back(resp_kv);
+                    // resp_kv.key = "tag_id";
+                    // resp_kv.value = tag.c_str();
+                    // resp.data.push_back(resp_kv);
 
-                    esphome::api::global_api_server->send_homeassistant_service_call(resp);
+                    esphome::api::global_api_server->fire_homeassistant_event("tag_scanned",{
+                        {"tag_id", tag.c_str()}
+                    });
+                    
                     ESP_LOGI("HA_API", "Sent Tag Value %s", tag.c_str());
                 }
 
