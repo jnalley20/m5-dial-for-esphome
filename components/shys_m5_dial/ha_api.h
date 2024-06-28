@@ -665,7 +665,7 @@ namespace esphome
 
                     resp.service = "homeassistant.tag_scanned";
                     
-                    resp_kv.key = "value";
+                    resp_kv.key = "tag_id";
                     resp_kv.value = tag.c_str();
                     resp.data.push_back(resp_kv);
 
