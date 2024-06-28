@@ -328,7 +328,6 @@ namespace esphome
         this->registerServices();
       }
 
-      void sendScannedTag(const char* tag) override;
       void scanTag(const char* tag){
           M5Dial.Speaker.tone(8000, 20);
           sendScannedTag(tag);
