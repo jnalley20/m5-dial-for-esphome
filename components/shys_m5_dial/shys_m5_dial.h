@@ -510,7 +510,7 @@ namespace esphome
       
     class M5RC522Trigger : public Trigger<std::string> {
      public:
-      void process(std::vector<uint8_t> &data);
+      void process(const char* &data);
     };
   }
 }

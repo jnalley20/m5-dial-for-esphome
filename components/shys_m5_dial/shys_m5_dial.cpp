@@ -59,14 +59,14 @@ namespace esphome
         }
 
         void ShysM5Dial::sendScannedTag(const char* tag){
-                const uint8_t* tag1 = reinterpret_cast<const uint8_t*>(tag);
+                //const uint8_t* tag1 = reinterpret_cast<const uint8_t*>(tag);
                 
                 for (auto *trigger : this->triggers_ontag_)
-                trigger->process(tag1);
+                trigger->process(tag);
             }
         
         
-        void M5RC522Trigger::process(std::vector<uint8_t> &data) { this->trigger(format_uid(data)); }
+        void M5RC522Trigger::process(const char* &data) { this->trigger(data.c_str()); }
 
         
     }
