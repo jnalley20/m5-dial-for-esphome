@@ -662,13 +662,13 @@ namespace esphome
                 void sendTagScanned(const std::string& tag) {
                     esphome::api::HomeassistantServiceResponse resp;
                     esphome::api::HomeassistantServiceMap resp_kv;
-                    resp.service = "tag_scanned";
+                    resp.service = "esphome.tag_scanned";
                     
                     // resp_kv.key = "device_id";
                     // resp_kv.value = "93d872ca49df6969";
                     // resp.data.push_back(resp_kv);
 
-                    resp_kv.key = "tag_id";
+                    resp_kv.key = "tag";
                     resp_kv.value = tag.c_str();
                     resp.data.push_back(resp_kv);
 
