@@ -323,7 +323,7 @@ namespace esphome
 
         m5DialDisplay->on_display_refresh(std::bind(&esphome::shys_m5_dial::ShysM5Dial::refreshDisplay, this, _1));
 
-        m5DialRfid->on_tag_scanned(std::bind(&esphome::shys_m5_dial::ShysM5Dial::scanTag, this, _1));
+        m5DialRfid->on_tag_scanned(std::bind(&esphome::shys_m5_dial::scanTag, this, _1));
 
         this->registerServices();
       }
@@ -372,12 +372,7 @@ namespace esphome
      /**
       * 
       */
-      void scanTag(const char* tag){
-        M5Dial.Speaker.tone(8000, 20);
-        const uint8_t* rfidtag = reinterpret_cast<const uint8_t*>(tag);
-        for (auto *trigger : this->triggers_ontag_)
-          trigger->process(rfidtag);
-      }
+      
       
       void register_ontag_trigger(M5RC522Trigger *trig) { this->triggers_ontag_.push_back(trig); }
       std::vector<M5RC522Trigger *> triggers_ontag_;
