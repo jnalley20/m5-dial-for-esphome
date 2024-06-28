@@ -60,9 +60,10 @@ namespace esphome
 
         void ShysM5Dial::sendScannedTag(const char* tag){
                 //const uint8_t* rfidtag = reinterpret_cast<const uint8_t*>(tag);
-                std::vector<uint8_t> rfidtag;
-                for (char &c : tag)
-                    rfidtag.push_back(static_cast<std::uint8_t>(c));
+                std::vector<std::uint8_t> rfidtag(
+                    reinterpret_cast<std::char*>(std::begin(tag)), 
+                    reinterpret_cast<std::char*>(std::end(tag))
+                );
                 for (auto *trigger : this->triggers_ontag_)
                 trigger->process(rfidtag);
             }
