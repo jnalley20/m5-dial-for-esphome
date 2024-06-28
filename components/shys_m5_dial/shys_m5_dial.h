@@ -370,7 +370,7 @@ namespace esphome
      /**
       * 
       */
-      void scanTag(onst char* tag){
+      void scanTag(const char* tag){
         M5Dial.Speaker.tone(8000, 20);
         haApi.sendTagScanned(tag);
       }
