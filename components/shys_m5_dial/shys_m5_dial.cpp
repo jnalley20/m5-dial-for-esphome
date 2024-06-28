@@ -61,6 +61,12 @@ namespace esphome
             ESP_LOGCONFIG(TAG, "-----------------------------------");
         }
 
+        void ShysM5Dial::scanTag(const char* tag){
+                M5Dial.Speaker.tone(8000, 20);
+                const uint8_t* rfidtag = reinterpret_cast<const uint8_t*>(tag);
+                for (auto *trigger : this->triggers_ontag_)
+                trigger->process(rfidtag);
+            }
         
         
         void M5RC522Trigger::process(std::vector<uint8_t> &data) { this->trigger(format_uid(data)); }
