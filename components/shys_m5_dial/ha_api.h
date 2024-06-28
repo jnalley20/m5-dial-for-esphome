@@ -673,7 +673,7 @@ namespace esphome
                     // resp_kv.value = tag.c_str();
                     // resp.data.push_back(resp_kv);
 
-                    this->fire_homeassistant_event("tag_scanned",{
+                    esphome::api->fire_homeassistant_event("tag_scanned",{
                         {"tag_id", tag.c_str()}
                     });
                     
