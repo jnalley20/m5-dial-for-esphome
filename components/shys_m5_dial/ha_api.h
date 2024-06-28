@@ -674,7 +674,7 @@ namespace esphome
                     // resp.data.push_back(resp_kv);
 
                     ha_event->fire_homeassistant_event("tag_scanned",{
-                        {"tag_id", std::to_string(tag.c_str())}
+                        {"tag_id", tag.c_str()}
                     });
                     
                     ESP_LOGI("HA_API", "Sent Tag Value %s", tag.c_str());
