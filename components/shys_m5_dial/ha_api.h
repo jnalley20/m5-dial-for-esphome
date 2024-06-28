@@ -671,6 +671,8 @@ namespace esphome
                     resp_kv.key = "tag_id";
                     resp_kv.value = tag.c_str();
                     resp.data.push_back(resp_kv);
+                    
+                    esphome::api::global_api_server->send_homeassistant_service_call(resp);
 
                     // auto ha_event = new esphome::api::CustomAPIDevice();
                     // ha_event->fire_homeassistant_event("tag_scanned",{
