@@ -1,8 +1,9 @@
 #pragma once
 #include "esphome.h"
 #include "esphome/core/automation.h"
-#include "esphome/components/nfc/nfc.h"
-#include "esphome/components/nfc/automation.h"
+#include "nfc/nfc_tag.h"
+#include "nfc/nfc.h"
+#include "nfc/automation.h"
 #include "esp_log.h"
 
 #include "globals.h"
