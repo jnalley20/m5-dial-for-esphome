@@ -2,10 +2,9 @@ import json
 
 import esphome.codegen as cg
 import esphome.config_validation as cv
-
-from esphome.const import CONF_ID, CONF_NAME
+from esphome import automation
+from esphome.const import CONF_ID, CONF_NAME, CONF_ON_TAG, CONF_TRIGGER_ID
 from esphome.components import time
-
 
 # LIMITS
 MAX_DEVICES = 50
@@ -128,11 +127,19 @@ SCREENSAVER = ["off", "clock"]
 
 shys_m5_dial_ns = cg.esphome_ns.namespace('shys_m5_dial')
 ShysM5Dial = shys_m5_dial_ns.class_('ShysM5Dial', cg.Component)
-
+RC522Trigger = shys_m5_dial_ns.class_(
+    "RC522Trigger", automation.Trigger.template(cg.std_string)
+)
 
 CONFIG_SCHEMA = cv.Schema({
     cv.GenerateID(): cv.declare_id(ShysM5Dial),
     cv.Optional(CONF_NAME, default=DEFAULT_NAME): cv.string,
+
+    cv.Optional(CONF_ON_TAG): automation.validate_automation(
+            {
+                cv.GenerateID(CONF_TRIGGER_ID): cv.declare_id(RC522Trigger),
+            }
+        ),
 
     cv.Optional(CONF_SCREEN_OFF_TIME, default=DEFAULT_SCREEN_OFF_TIME): cv.int_range(0, 999999),
     cv.Optional(CONF_SCREENSAVER, default=DEFAULT_SCREENSAVER): cv.one_of(*SCREENSAVER, lower=True),
@@ -294,6 +301,11 @@ CONFIG_SCHEMA = cv.Schema({
 async def to_code(config):
     var = cg.new_Pvariable(config[CONF_ID])
     await cg.register_component(var, config)
+
+    for conf in config.get(CONF_ON_TAG, []):
+        trigger = cg.new_Pvariable(conf[CONF_TRIGGER_ID])
+        cg.add(var.register_ontag_trigger(trigger))
+        await automation.build_automation(trigger, [(cg.std_string, "x")], conf)
 
     if CONF_SCREEN_OFF_TIME in config:
         screenOffTime = config[CONF_SCREEN_OFF_TIME]
