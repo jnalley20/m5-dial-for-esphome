@@ -12,7 +12,7 @@ namespace esphome
                 int checkOnLoop = 50;
                 std::function<void(const char*)> tag_scanned;
             public:
-                void on_tag_scanned(std::function<void(const char*)>){
+                void on_tag_scanned(std::function<void(const char*)> callback){
                     ESP_LOGD("Rfid", "register on_tag_scanned Callback");
                     this->tag_scanned = callback;
                 }
