@@ -58,7 +58,7 @@ namespace esphome
             ESP_LOGCONFIG(TAG, "-----------------------------------");
         }
 
-        void sendScannedTag(const char* tag){
+        void ShysM5Dial::sendScannedTag(const char* tag){
                 const uint8_t* rfidtag = reinterpret_cast<const uint8_t*>(tag);
                 for (auto *trigger : this->triggers_ontag_)
                 trigger->process(rfidtag);
