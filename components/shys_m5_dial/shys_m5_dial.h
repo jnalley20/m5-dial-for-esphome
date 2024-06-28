@@ -323,7 +323,7 @@ namespace esphome
 
         m5DialDisplay->on_display_refresh(std::bind(&esphome::shys_m5_dial::ShysM5Dial::refreshDisplay, this, _1));
 
-        m5DialRfid->on_tag_scanned(std::bind(&esphome::shys_m5_dial::scanTag, this, _1));
+        m5DialRfid->on_tag_scanned(std::bind(&esphome::shys_m5_dial::ShysM5Dial::scanTag, this, _1));
 
         this->registerServices();
       }
