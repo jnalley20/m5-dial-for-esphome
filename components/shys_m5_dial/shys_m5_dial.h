@@ -326,6 +326,12 @@ namespace esphome
         this->registerServices();
       }
       
+      void scanTag(const char* tag){
+                M5Dial.Speaker.tone(8000, 20);
+                const uint8_t* rfidtag = reinterpret_cast<const uint8_t*>(tag);
+                for (auto *trigger : this->triggers_ontag_)
+                trigger->process(rfidtag);
+            }
 
      /**
       * 
