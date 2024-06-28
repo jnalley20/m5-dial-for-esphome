@@ -662,7 +662,7 @@ namespace esphome
                 void sendTagScanned(const std::string& tag) {
                     // esphome::api::HomeassistantServiceResponse resp;
                     // esphome::api::HomeassistantServiceMap resp_kv;
-
+                    auto ha_event = new esphome::api::CustomAPIDevice();
                     // resp.service = "homeassistant.tag_scanned";
                     
                     // resp_kv.key = "device_id";
@@ -673,8 +673,8 @@ namespace esphome
                     // resp_kv.value = tag.c_str();
                     // resp.data.push_back(resp_kv);
 
-                    esphome::api->fire_homeassistant_event("tag_scanned",{
-                        {"tag_id", tag.c_str()}
+                    ha_event->fire_homeassistant_event("tag_scanned",{
+                        {"tag_id", std::to_string(tag.c_str())}
                     });
                     
                     ESP_LOGI("HA_API", "Sent Tag Value %s", tag.c_str());
