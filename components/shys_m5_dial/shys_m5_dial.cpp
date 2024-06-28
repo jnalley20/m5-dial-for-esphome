@@ -61,12 +61,7 @@ namespace esphome
             ESP_LOGCONFIG(TAG, "-----------------------------------");
         }
 
-        void ShysM5Dial::sendScannedTag(const char* tag){
-                //const uint8_t* tag1 = reinterpret_cast<const uint8_t*>(tag);
-                
-                for (auto *trigger : this->triggers_ontag_)
-                trigger->process(tag);
-            }
+        
         
         
         void M5RC522Trigger::process(const char* &data) { this->trigger(format_uid2(data)); }
