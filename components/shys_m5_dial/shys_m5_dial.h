@@ -342,24 +342,6 @@ namespace esphome
           M5Dial.Speaker.tone(8000, 20);
           //sendScannedTag(tag);
       }
-      void register_ontag_trigger(nfc::NfcOnTagTrigger *trig) { this->triggers_ontag_.push_back(trig); }
-      std::vector<nfc::NfcOnTagTrigger *> triggers_ontag_;
-      std::unique_ptr<nfc::NfcTag> ShysM5Dial::read_tag_(std::vector<uint8_t> &uid) {
-        uint8_t type = nfc::guess_tag_type(uid.size());
-
-        if (type == nfc::TAG_TYPE_MIFARE_CLASSIC) {
-            ESP_LOGD(TAG, "Mifare classic");
-            return this->read_mifare_classic_tag_(uid);
-        } else if (type == nfc::TAG_TYPE_2) {
-            ESP_LOGD(TAG, "Mifare ultralight");
-            return this->read_mifare_ultralight_tag_(uid);
-        } else if (type == nfc::TAG_TYPE_UNKNOWN) {
-            ESP_LOGV(TAG, "Cannot determine tag type");
-            return make_unique<nfc::NfcTag>(uid);
-        } else {
-            return make_unique<nfc::NfcTag>(uid);
-        }
-      }
      /**
       * 
       */
