@@ -375,7 +375,7 @@ namespace esphome
       void scanTag(const char* tag){
         M5Dial.Speaker.tone(8000, 20);
         for (auto *trigger : this->triggers_ontag_)
-          trigger->process(rfid_uid);
+          trigger->process(reinterpret_cast<const uint8_t*>(tag));
       }
       
       void register_ontag_trigger(RC522Trigger *trig) { this->triggers_ontag_.push_back(trig); }

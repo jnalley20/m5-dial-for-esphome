@@ -28,7 +28,6 @@ namespace esphome
                             
                             uint8_t piccType = M5Dial.Rfid.PICC_GetType(M5Dial.Rfid.uid.sak);
                             Serial.println(M5Dial.Rfid.PICC_GetTypeName(piccType));
-                            
                             String uid = "";
                             for (byte i = 0; i < M5Dial.Rfid.uid.size;
                                 i++) {  // Output the stored UID data.  将存储的UID数据输出
