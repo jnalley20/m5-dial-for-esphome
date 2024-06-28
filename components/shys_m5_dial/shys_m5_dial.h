@@ -330,7 +330,7 @@ namespace esphome
 
       void scanTag(const char* tag){
           M5Dial.Speaker.tone(8000, 20);
-          esphome::shys_m5_dial::sendScannedTag(tag);
+          sendScannedTag(tag);
       }
 
      /**
