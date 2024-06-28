@@ -48,7 +48,8 @@ namespace esphome
                             Serial.println();
 
                             //
-                            this->tag_scanned(uid);
+                            const char* tag = uid.c_str();
+                            this->tag_scanned(tag);
                         }
                     }
                     else{
