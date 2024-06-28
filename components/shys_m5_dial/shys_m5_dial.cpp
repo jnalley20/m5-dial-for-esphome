@@ -7,21 +7,6 @@ namespace esphome
     {
         static const char *TAG = "shys_m5_dial";
 
-        std::string format_uid(std::vector<uint8_t> &uid) {
-            char buf[32];
-            int offset = 0;
-            for (size_t i = 0; i < uid.size(); i++) {
-                const char *format = "%02X";
-                if (i + 1 < uid.size())
-                format = "%02X-";
-                offset += sprintf(buf + offset, format, uid[i]);
-            }
-            return std::string(buf);
-        }
-        std::string format_uid2(const char* &uid) {
-            return std::string(uid);
-        }
-
         /**
          * @brief SETUP
          *
@@ -30,7 +15,6 @@ namespace esphome
 
         void ShysM5Dial::setup()
         {
-            using std::placeholders::_1;
             ShysM5Dial::initDevice();
             ESP_LOGI("log", "%s", "M5 is initialized");
         }
@@ -62,9 +46,6 @@ namespace esphome
         }
 
         
-        
-        
-        void M5RC522Trigger::process(const char* &data) { this->trigger(format_uid2(data)); }
 
         
     }

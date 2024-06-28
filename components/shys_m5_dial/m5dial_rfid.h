@@ -11,6 +11,7 @@ namespace esphome
                 int currentLoop = 0;
                 int checkOnLoop = 50;
                 std::function<void(const char*)> tag_scanned;
+                std::function<void(std::vector<uint8_t>)> nfcid_scanned;
             public:
                 void on_tag_scanned(std::function<void(const char*)> callback){
                     ESP_LOGD("Rfid", "register on_tag_scanned Callback");
@@ -28,6 +29,9 @@ namespace esphome
                             
                             uint8_t piccType = M5Dial.Rfid.PICC_GetType(M5Dial.Rfid.uid.sak);
                             Serial.println(M5Dial.Rfid.PICC_GetTypeName(piccType));
+                            std::vector<uint8_t> nfcid(M5Dial.Rfid.uid.begin(), M5Dial.Rfid.uid.size);
+                            this->nfcid_scanned(nfcid);
+
                             String uid = "";
                             for (byte i = 0; i < M5Dial.Rfid.uid.size;
                                 i++) {  // Output the stored UID data.  将存储的UID数据输出

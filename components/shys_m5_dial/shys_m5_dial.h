@@ -1,6 +1,9 @@
 #pragma once
 #include "esphome.h"
 #include "esphome/core/automation.h"
+#include "esphome/components/nfc/nfc_tag.h"
+#include "esphome/components/nfc/nfc.h"
+#include "esphome/components/nfc/automation.h"
 #include "esp_log.h"
 
 #include "globals.h"
@@ -323,23 +326,49 @@ namespace esphome
 
         m5DialDisplay->on_display_refresh(std::bind(&esphome::shys_m5_dial::ShysM5Dial::refreshDisplay, this, _1));
 
-        m5DialRfid->on_tag_scanned(std::bind(&esphome::shys_m5_dial::ShysM5Dial::scanTag, this, _1));
+        //m5DialRfid->on_tag_scanned(std::bind(&esphome::shys_m5_dial::ShysM5Dial::scanTag, this, _1));
+        m5DialRfid->nfcid_scanned(std::bind(&esphome::shys_m5_dial::ShysM5Dial::nfcScanTag, this, _1));
 
         this->registerServices();
       }
-
-      void sendScannedTag(const char* tag){
-                //const uint8_t* tag1 = reinterpret_cast<const uint8_t*>(tag);
-                
-                for (auto *trigger : this->triggers_ontag_)
-                trigger->process(tag);
-            }
-
-      void scanTag(const char* tag){
-          M5Dial.Speaker.tone(8000, 20);
-          sendScannedTag(tag);
+      void nfcScanTag(std::vector<uint8_t> nfcTag){
+        auto tag = this->read_tag_(nfcTag);
+        for (auto *trigger : this->triggers_ontag_)
+          trigger->process(tag);
       }
+      // void sendScannedTag(const char* tag){
+      //           //const uint8_t* tag1 = reinterpret_cast<const uint8_t*>(tag);
+                
+      //           for (auto *trigger : this->triggers_ontag_)
+      //           trigger->process(tag);
 
+      //           auto tag = this->read_tag_(nfcid);
+      //           for (auto *trigger : this->triggers_ontag_)
+      //             trigger->process(tag);
+      //       }
+
+      // void scanTag(const char* tag){
+      //     M5Dial.Speaker.tone(8000, 20);
+      //     sendScannedTag(tag);
+      // }
+      void register_ontag_trigger(nfc::NfcOnTagTrigger *trig) { this->triggers_ontag_.push_back(trig); }
+      std::vector<nfc::NfcOnTagTrigger *> triggers_ontag_;
+      std::unique_ptr<nfc::NfcTag> ShysM5Dial::read_tag_(std::vector<uint8_t> &uid) {
+        uint8_t type = nfc::guess_tag_type(uid.size());
+
+        if (type == nfc::TAG_TYPE_MIFARE_CLASSIC) {
+            ESP_LOGD(TAG, "Mifare classic");
+            return this->read_mifare_classic_tag_(uid);
+        } else if (type == nfc::TAG_TYPE_2) {
+            ESP_LOGD(TAG, "Mifare ultralight");
+            return this->read_mifare_ultralight_tag_(uid);
+        } else if (type == nfc::TAG_TYPE_UNKNOWN) {
+            ESP_LOGV(TAG, "Cannot determine tag type");
+            return make_unique<nfc::NfcTag>(uid);
+        } else {
+            return make_unique<nfc::NfcTag>(uid);
+        }
+      }
      /**
       * 
       */
@@ -385,8 +414,6 @@ namespace esphome
       */
       
       
-      void register_ontag_trigger(M5RC522Trigger *trig) { this->triggers_ontag_.push_back(trig); }
-      std::vector<M5RC522Trigger *> triggers_ontag_;
       
      /**
       * 
@@ -514,9 +541,5 @@ namespace esphome
 
     };
       
-    class M5RC522Trigger : public Trigger<std::string> {
-     public:
-      void process(const char* &data);
-    };
   }
 }
