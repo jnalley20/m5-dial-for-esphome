@@ -61,6 +61,7 @@ namespace esphome
       M5DialRotary* m5DialRotary = new M5DialRotary();
       M5DialTouch* m5DialTouch = new M5DialTouch();
       M5DialEEPROM* m5DialEEPROM = new M5DialEEPROM();
+      M5DialRfid* m5DialRfid = new M5DialRfid();
 
       esphome::time::RealTimeClock* local_time;
 
@@ -342,6 +343,7 @@ namespace esphome
           if (m5DialRotary->handleButtonPress()){
             m5DialDisplay->resetLastEventTimer();
           }
+          m5DialRfid->handleRfId();
           m5DialTouch->handleTouch();
           m5DialDisplay->validateTimeout();
 

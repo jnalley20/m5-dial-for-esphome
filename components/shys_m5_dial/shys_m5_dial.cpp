@@ -24,7 +24,6 @@ namespace esphome
          *
          * Initialisierung
          */
-        M5DialRfid* m5DialRfid = new M5DialRfid();
 
         void ShysM5Dial::setup()
         {
@@ -44,7 +43,6 @@ namespace esphome
             M5Dial.update();
             esphome::delay(1);
             ShysM5Dial::doLoop();
-            m5DialRfid->handleRfId();
             esphome::delay(1);
         }
 
