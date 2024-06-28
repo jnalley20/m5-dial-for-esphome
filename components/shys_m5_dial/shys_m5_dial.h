@@ -36,6 +36,7 @@ namespace esphome
 
       // -------------------------------
 
+      HaApi haApi;
       HaDevice* devices[MAX_DEVICE_COUNT];
       int deviceAnzahl = 0;
 
@@ -320,6 +321,8 @@ namespace esphome
 
         m5DialDisplay->on_display_refresh(std::bind(&esphome::shys_m5_dial::ShysM5Dial::refreshDisplay, this, _1));
 
+        m5DialRfid->on_tag_scanned(std::bind(&esphome::shys_m5_dial::ShysM5Dial::scanTag, this, _1))
+
         this->registerServices();
       }
 
@@ -364,6 +367,13 @@ namespace esphome
         }
       }
 
+     /**
+      * 
+      */
+      void scanTag(onst char* tag){
+        M5Dial.Speaker.tone(8000, 20);
+        haApi.sendTagScanned(tag);
+      }
 
      /**
       * 

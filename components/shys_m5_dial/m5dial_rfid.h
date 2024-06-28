@@ -10,7 +10,12 @@ namespace esphome
             protected:
                 int currentLoop = 0;
                 int checkOnLoop = 50;
+                std::function<void(const char*)> tag_scanned;
             public:
+                void on_tag_scanned(std::function<void(const char*)>){
+                    ESP_LOGD("Rfid", "register on_tag_scanned Callback");
+                    this->tag_scanned = callback;
+                }
                 void handleRfId(){
                     if(currentLoop == checkOnLoop){
                         currentLoop = 0;
@@ -30,7 +35,7 @@ namespace esphome
                                 Serial.printf("%02X ", M5Dial.Rfid.uid.uidByte[i]);
                                 uid += String(M5Dial.Rfid.uid.uidByte[i], HEX);
                             }
-                            M5Dial.Speaker.tone(8000, 20);
+                            //M5Dial.Speaker.tone(8000, 20);
                             M5Dial.Display.drawString(M5Dial.Rfid.PICC_GetTypeName(piccType),
                                                     M5Dial.Display.width() / 2,
                                                     M5Dial.Display.height() / 2 - 30);
@@ -42,7 +47,8 @@ namespace esphome
                                                     M5Dial.Display.height() / 2 + 30);
                             Serial.println();
 
-                            haApi.sendTagScanned(uid);
+                            //
+                            this->tag_scanned(uid);
                         }
                     }
                     else{
