@@ -17,6 +17,7 @@
 #include "ha_device_timer.h"
 
 #include "M5Dial.h"
+#include <vector>
 
 #define MAX_DEVICE_COUNT 50
 
@@ -24,7 +25,6 @@ namespace esphome
 {
   namespace shys_m5_dial
   {
-    class M5RC522Trigger;
     class ShysM5Dial : public Component, public esphome::api::CustomAPIDevice
     {
     protected:
