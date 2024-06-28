@@ -127,8 +127,8 @@ SCREENSAVER = ["off", "clock"]
 
 shys_m5_dial_ns = cg.esphome_ns.namespace('shys_m5_dial')
 ShysM5Dial = shys_m5_dial_ns.class_('ShysM5Dial', cg.Component)
-RC522Trigger = shys_m5_dial_ns.class_(
-    "RC522Trigger", automation.Trigger.template(cg.std_string)
+M5RC522Trigger = shys_m5_dial_ns.class_(
+    "M5RC522Trigger", automation.Trigger.template(cg.std_string)
 )
 
 CONFIG_SCHEMA = cv.Schema({
@@ -137,7 +137,7 @@ CONFIG_SCHEMA = cv.Schema({
 
     cv.Optional(CONF_ON_TAG): automation.validate_automation(
             {
-                cv.GenerateID(CONF_TRIGGER_ID): cv.declare_id(RC522Trigger),
+                cv.GenerateID(CONF_TRIGGER_ID): cv.declare_id(M5RC522Trigger),
             }
         ),
 

@@ -18,7 +18,7 @@ namespace esphome
             }
             return std::string(buf);
         }
-        
+
         /**
          * @brief SETUP
          *
@@ -56,7 +56,7 @@ namespace esphome
             ESP_LOGCONFIG(TAG, "-----------------------------------");
         }
         
-        void RC522Trigger::process(std::vector<uint8_t> &data) { this->trigger(format_uid(data)); }
+        void M5RC522Trigger::process(std::vector<uint8_t> &data) { this->trigger(format_uid(data)); }
         
     }
 }

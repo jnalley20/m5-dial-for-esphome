@@ -24,7 +24,7 @@ namespace esphome
 {
   namespace shys_m5_dial
   {
-    class RC522Trigger;
+    class M5RC522Trigger;
     class ShysM5Dial : public Component, public esphome::api::CustomAPIDevice
     {
     protected:
@@ -379,8 +379,8 @@ namespace esphome
           trigger->process(rfidtag);
       }
       
-      void register_ontag_trigger(RC522Trigger *trig) { this->triggers_ontag_.push_back(trig); }
-      std::vector<RC522Trigger *> triggers_ontag_;
+      void register_ontag_trigger(M5RC522Trigger *trig) { this->triggers_ontag_.push_back(trig); }
+      std::vector<M5RC522Trigger *> triggers_ontag_;
       
      /**
       * 
@@ -508,7 +508,7 @@ namespace esphome
 
     };
       
-    class RC522Trigger : public Trigger<std::string> {
+    class M5RC522Trigger : public Trigger<std::string> {
      public:
       void process(std::vector<uint8_t> &data);
     };
