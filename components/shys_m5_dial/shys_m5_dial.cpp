@@ -19,7 +19,7 @@ namespace esphome
             return std::string(buf);
         }
         std::string format_uid2(const char* &uid) {
-            return std::string(uid.c_str());
+            return std::string(uid);
         }
 
         /**
