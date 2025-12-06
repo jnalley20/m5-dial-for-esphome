@@ -7,7 +7,7 @@ esphome:
   name: ${name}
   name_add_mac_suffix: false
   project:
-    name: smarthomeyourself.m5_dial
+    name: jnalley20.m5_dial
     version: "1.1"
       
   platformio_options:
@@ -22,18 +22,18 @@ esphome:
 external_components:
   - source:
       type: git
-      url: https://github.com/SmartHome-yourself/m5-dial-for-esphome/
+      url: https://github.com/jnalley20/m5-dial-for-esphome/
       ref: main
     components: [shys_m5_dial]
 
 dashboard_import:
-  package_import_url: github://SmartHome-yourself/m5-dial-for-esphome/shys-m5-dial.yaml@main
+  package_import_url: github://jnalley20/m5-dial-for-esphome/shys-m5-dial.yaml@main
   import_full_config: false
 
 esp32:
   board: esp32-s3-devkitc-1
   framework:
-    type: arduino
+    type: esp-idf
   flash_size: 8MB
 
 logger:
@@ -62,5 +62,3 @@ ota:
 wifi:
   ssid: ${wifi_ssid}
   password: ${wifi_password}
-  ap:
-    password: "12345678"
