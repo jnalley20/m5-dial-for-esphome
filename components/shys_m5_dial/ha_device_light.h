@@ -11,10 +11,10 @@ namespace esphome
     {
         class HaDeviceLight: public esphome::shys_m5_dial::HaDevice {
             protected:
-                HaDeviceModeLightOnOff*             modeOnOff           = new HaDeviceModeLightOnOff(*this);
-                HaDeviceModeLightBrightness*        modeBrightness      = new HaDeviceModeLightBrightness(*this);
-                HaDeviceModeLightColor*             modeColor           = new HaDeviceModeLightColor(*this);
-                HaDeviceModeLightTunableWhite*      modeTunableWhite    = new HaDeviceModeLightTunableWhite(*this);
+                HaDeviceModeLightOnOff*             modeOnOff           = nullptr;
+                HaDeviceModeLightBrightness*        modeBrightness      = nullptr;
+                HaDeviceModeLightColor*             modeColor           = nullptr;
+                HaDeviceModeLightTunableWhite*      modeTunableWhite    = nullptr;
 
                 bool brightnessModeActive = false;
                 bool whiteModeActive = false;
@@ -32,6 +32,13 @@ namespace esphome
             public:
                 HaDeviceLight(const std::string& entity_id, const std::string& name, const std::string& modes) : HaDevice(entity_id, name, modes) {}
 
+                ~HaDeviceLight() {
+                    delete modeOnOff;
+                    delete modeBrightness;
+                    delete modeColor;
+                    delete modeTunableWhite;
+                }
+
                 void init() override {
                     ESP_LOGD("HA_DEVICE", "Init Light: %s", this->getEntityId().c_str());
 
@@ -46,6 +53,11 @@ namespace esphome
                     if(brightnessModeActive){
                         ESP_LOGD("HA_DEVICE", "Dimm-Mode enabled (steps: %i)", dimm_mode["rotary_step_width"].as<int>());
                         
+                        modeBrightness = new HaDeviceModeLightBrightness(*this);
+                        if (modeBrightness == nullptr) {
+                            ESP_LOGE("HA_DEVICE", "Failed to allocate modeBrightness for %s", this->getEntityId().c_str());
+                            return;
+                        }
                         this->addMode(modeBrightness);
 
                         if (dimm_mode["rotary_step_width"].is<int>()) {
@@ -61,6 +73,11 @@ namespace esphome
                         }
 
                     } else {
+                        modeOnOff = new HaDeviceModeLightOnOff(*this);
+                        if (modeOnOff == nullptr) {
+                            ESP_LOGE("HA_DEVICE", "Failed to allocate modeOnOff for %s", this->getEntityId().c_str());
+                            return;
+                        }
                         this->addMode(modeOnOff);
                     }
 
@@ -71,6 +88,11 @@ namespace esphome
                         if (rgb_mode["enable"].is<bool>() && rgb_mode["enable"].as<bool>()) {
                             ESP_LOGD("HA_DEVICE", "Color-Mode enabled (steps: %i)", rgb_mode["rotary_step_width"].as<int>());
 
+                            modeColor = new HaDeviceModeLightColor(*this);
+                            if (modeColor == nullptr) {
+                                ESP_LOGE("HA_DEVICE", "Failed to allocate modeColor for %s", this->getEntityId().c_str());
+                                return;
+                            }
                             this->addMode(modeColor);
 
                             if (rgb_mode["rotary_step_width"].is<int>()) {
@@ -87,6 +109,11 @@ namespace esphome
                             whiteModeActive = true;
                             ESP_LOGD("HA_DEVICE", "White-Mode enabled (steps: %i)", white_mode["rotary_step_width"].as<int>());
 
+                            modeTunableWhite = new HaDeviceModeLightTunableWhite(*this);
+                            if (modeTunableWhite == nullptr) {
+                                ESP_LOGE("HA_DEVICE", "Failed to allocate modeTunableWhite for %s", this->getEntityId().c_str());
+                                return;
+                            }
                             this->addMode(modeTunableWhite);                            
 
                             if (white_mode["rotary_step_width"].is<int>()) {

@@ -8,14 +8,23 @@ namespace esphome
     {
         class HaDeviceLock: public esphome::shys_m5_dial::HaDevice {
             protected:
-                HaDeviceModeLock*   modeLock   = new HaDeviceModeLock(*this);
+                HaDeviceModeLock*   modeLock   = nullptr;
 
             public:
                 HaDeviceLock(const std::string& entity_id, const std::string& name, const std::string& modes) : HaDevice(entity_id, name, modes) {}
 
+                ~HaDeviceLock() {
+                    delete modeLock;
+                }
+
                 void init() override {
                     ESP_LOGD("HA_DEVICE", "Init Lock: %s", this->getEntityId().c_str());
 
+                    modeLock = new HaDeviceModeLock(*this);
+                    if (modeLock == nullptr) {
+                        ESP_LOGE("HA_DEVICE", "Failed to allocate modeLock for %s", this->getEntityId().c_str());
+                        return;
+                    }
                     this->addMode(modeLock);
 
                     if (this->modeConfig["lock_mode"].is<JsonObject>()) {
