@@ -309,7 +309,7 @@ namespace esphome
         using std::placeholders::_1;
         using std::placeholders::_2;
 
-        ESP_LOGI("DEVICE", "Initialisierung...");
+        ESP_LOGI("DEVICE", "Initialisierung...Actually, it's initializing.");
 
         auto cfg = M5.config();
         M5Dial.begin(cfg, enableEncoder, enableRFID);
