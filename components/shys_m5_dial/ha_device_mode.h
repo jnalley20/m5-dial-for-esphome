@@ -52,24 +52,32 @@ namespace esphome
                 }
 
                 void raiseCurrentValue(){
-                    int newValue = this->getValue() + rotaryStepWidth;
+                    int oldValue = this->getValue();
+                    int newValue = oldValue + rotaryStepWidth;
                     newValue = getNextToRotaryStepwidth(newValue);
+                    ESP_LOGV("HA_MODE", "raiseCurrentValue: old=%i, calculated=%i, step=%i, max=%i", oldValue, newValue, rotaryStepWidth, maxValue);
 
                     if(newValue > this->maxValue && minMaxLimitActive){
-                        setValue(endlessRotaryValue?this->minValue:this->maxValue);
+                        int finalValue = endlessRotaryValue?this->minValue:this->maxValue;
+                        ESP_LOGV("HA_MODE", "raiseCurrentValue: capped at %i (endless=%d)", finalValue, endlessRotaryValue);
+                        setValue(finalValue);
                     } else {
                         setValue(newValue);
                     }
                 }
 
                 void reduceCurrentValue(){
-                    int newValue = this->getValue() - rotaryStepWidth;
+                    int oldValue = this->getValue();
+                    int newValue = oldValue - rotaryStepWidth;
                     newValue = getNextToRotaryStepwidth(newValue);
+                    ESP_LOGV("HA_MODE", "reduceCurrentValue: old=%i, calculated=%i, step=%i, min=%i", oldValue, newValue, rotaryStepWidth, minValue);
 
                     if(newValue >= this->minValue && minMaxLimitActive){
                         setValue(newValue);
                     } else {
-                        setValue(endlessRotaryValue?this->maxValue:this->minValue);
+                        int finalValue = endlessRotaryValue?this->maxValue:this->minValue;
+                        ESP_LOGV("HA_MODE", "reduceCurrentValue: capped at %i (endless=%d)", finalValue, endlessRotaryValue);
+                        setValue(finalValue);
                     }
                 }
 
@@ -159,12 +167,17 @@ namespace esphome
                 }
 
                 bool defaultOnRotary(M5DialDisplay& display, const char * direction)  {
+                    int oldValue = this->getValue();
+                    ESP_LOGV("HA_MODE", "defaultOnRotary: direction=%s, currentValue=%i", direction, oldValue);
+                    
                     if (strcmp(direction, ROTARY_LEFT)==0){
                         this->reduceCurrentValue();
                     } else if (strcmp(direction, ROTARY_RIGHT)==0){
                         this->raiseCurrentValue();
                     }
 
+                    int newValue = this->getValue();
+                    ESP_LOGD("HA_MODE", "defaultOnRotary: value changed from %i to %i", oldValue, newValue);
                     return true;
                 }
 
@@ -202,11 +215,13 @@ namespace esphome
 
                 void updateHomeAssistantValue(){
                     if(this->isValueModified() && this->isApiCallNeeded() ) {
+                        ESP_LOGD("HA_MODE", "Sending value to HA: value=%i, modified=%d", getValue(), currentValueModified);
                         lastApiCall = esphome::millis();
 
                         this->sendValueToHomeAssistant(getValue());
 
                         currentValueModified = false;
+                        ESP_LOGD("HA_MODE", "Value sent to HA, modified flag cleared");
                     }
                 }
 
@@ -222,9 +237,11 @@ namespace esphome
                 }
 
                 void setValue(int val){
+                    ESP_LOGV("HA_MODE", "setValue: setting value to %i (was %i)", val, this->value);
                     this->value = val;
                     this->lastValueUpdate = esphome::millis();
                     this->currentValueModified = true;
+                    ESP_LOGV("HA_MODE", "setValue: value set, modified flag=true");
                 }
 
                 void setReceivedValue(int val){

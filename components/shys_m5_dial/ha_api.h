@@ -28,18 +28,25 @@ namespace esphome
 
 
                 void turnLightOn(const std::string& entity, int brightness = -1, int colorValue = -1){
+                    ESP_LOGD("HA_API", "turnLightOn called: entity=%s, brightness=%i, colorValue=%i", entity.c_str(), brightness, colorValue);
+                    
                     esphome::api::HomeassistantActionRequest resp;
                     resp.set_service(esphome::StringRef("light.turn_on"));
+                    ESP_LOGV("HA_API", "Service set to light.turn_on");
                     
                     auto &kv1 = resp.data.emplace_back();
                     kv1.set_key(esphome::StringRef("entity_id"));
                     kv1.value = entity;
+                    ESP_LOGV("HA_API", "Entity ID set to %s", entity.c_str());
 
+                    std::string brightness_str;
                     if(brightness >= 0){
+                        brightness_str = std::to_string(brightness);
+                        ESP_LOGV("HA_API", "Brightness string created: %s", brightness_str.c_str());
                         auto &kv2 = resp.data.emplace_back();
                         kv2.set_key(esphome::StringRef("brightness_pct"));
-                        kv2.value = std::to_string(brightness);
-                        ESP_LOGD("HA_API", "Turn ON %s with brightness: %i", entity.c_str(), brightness);
+                        kv2.value = brightness_str;
+                        ESP_LOGD("HA_API", "Turn ON %s with brightness: %i (str=%s)", entity.c_str(), brightness, brightness_str.c_str());
                     }
 
                     if(colorValue >= 0){
@@ -53,8 +60,9 @@ namespace esphome
                         ESP_LOGI("HA_API", "Turn ON %s with color template: %s", entity.c_str(), colorTemplate);
                     }
 
+                    ESP_LOGI("HA_API", "About to send light.turn_on to %s", entity.c_str());
                     api::global_api_server->send_homeassistant_action(resp);
-                    ESP_LOGI("HA_API", "Sent light.turn_on to %s", entity.c_str());
+                    ESP_LOGI("HA_API", "Successfully sent light.turn_on to %s", entity.c_str());
                 }
 
                 void turnLightOnWhite(const std::string& entity, int kelvin = -1){
@@ -67,10 +75,12 @@ namespace esphome
                     kv1.set_key(esphome::StringRef("entity_id"));
                     kv1.value = entity;
 
+                    std::string kelvin_str;
                     if(kelvin >= 0){
+                        kelvin_str = std::to_string(kelvin);
                         auto &kv2 = resp.data.emplace_back();
                         kv2.set_key(esphome::StringRef("kelvin"));
-                        kv2.value = std::to_string(kelvin);
+                        kv2.value = kelvin_str;
                         ESP_LOGD("HA_API", "Turn ON %s with kelvin: %i", entity.c_str(), kelvin);
                     }
 
@@ -132,9 +142,10 @@ namespace esphome
                     kv1.set_key(esphome::StringRef("entity_id"));
                     kv1.value = entity;
 
+                    std::string value_str = std::to_string(value);
                     auto &kv2 = resp.data.emplace_back();
                     kv2.set_key(esphome::StringRef("temperature"));
-                    kv2.value = std::to_string(value);
+                    kv2.value = value_str;
 
                     api::global_api_server->send_homeassistant_action(resp);
                     ESP_LOGD("HA_API", "Climate set Temperature: %i on %s", value, entity.c_str());
@@ -166,9 +177,10 @@ namespace esphome
                     kv1.set_key(esphome::StringRef("entity_id"));
                     kv1.value = entity;
 
+                    std::string value_str = std::to_string(value);
                     auto &kv2 = resp.data.emplace_back();
                     kv2.set_key(esphome::StringRef("position"));
-                    kv2.value = std::to_string(value);
+                    kv2.value = value_str;
 
                     api::global_api_server->send_homeassistant_action(resp);
                     ESP_LOGD("HA_API", "Cover set Position: %i on %s", value, entity.c_str());
@@ -268,9 +280,10 @@ namespace esphome
                     kv1.set_key(esphome::StringRef("entity_id"));
                     kv1.value = entity;
 
+                    std::string value_str = std::to_string(value);
                     auto &kv2 = resp.data.emplace_back();
                     kv2.set_key(esphome::StringRef("percentage"));
-                    kv2.value = std::to_string(value);
+                    kv2.value = value_str;
 
                     api::global_api_server->send_homeassistant_action(resp);
                     ESP_LOGD("HA_API", "Fan set Speed: %i on %s", value, entity.c_str());
@@ -290,9 +303,10 @@ namespace esphome
                     kv1.set_key(esphome::StringRef("entity_id"));
                     kv1.value = entity;
 
+                    std::string value_str = std::to_string((float)value/100);
                     auto &kv2 = resp.data.emplace_back();
                     kv2.set_key(esphome::StringRef("volume_level"));
-                    kv2.value = std::to_string((float)value/100);
+                    kv2.value = value_str;
 
                     api::global_api_server->send_homeassistant_action(resp);
                     ESP_LOGD("HA_API", "MediaPlayer set Volume: %i on %s", value, entity.c_str());
@@ -419,9 +433,10 @@ namespace esphome
                     kv1.set_key(esphome::StringRef("entity_id"));
                     kv1.value = entity;
 
+                    std::string value_str = std::to_string(value);
                     auto &kv2 = resp.data.emplace_back();
                     kv2.set_key(esphome::StringRef("value"));
-                    kv2.value = std::to_string(value);
+                    kv2.value = value_str;
 
                     api::global_api_server->send_homeassistant_action(resp);
                     ESP_LOGD("HA_API", "Number set Value: %i on %s", value, entity.c_str());
@@ -455,9 +470,10 @@ namespace esphome
                     kv1.set_key(esphome::StringRef("entity_id"));
                     kv1.value = entity;
 
+                    std::string duration_str = std::to_string(duration);
                     auto &kv2 = resp.data.emplace_back();
                     kv2.set_key(esphome::StringRef("duration"));
-                    kv2.value = std::to_string(duration);
+                    kv2.value = duration_str;
 
                     api::global_api_server->send_homeassistant_action(resp);
                     ESP_LOGD("HA_API", "Timer start: %i on %s", duration, entity.c_str());
@@ -501,9 +517,10 @@ namespace esphome
                     kv1.set_key(esphome::StringRef("entity_id"));
                     kv1.value = entity;
 
+                    std::string duration_str = std::to_string(duration);
                     auto &kv2 = resp.data.emplace_back();
                     kv2.set_key(esphome::StringRef("duration"));
-                    kv2.value = std::to_string(duration);
+                    kv2.value = duration_str;
 
                     api::global_api_server->send_homeassistant_action(resp);
                     ESP_LOGD("HA_API", "Timer change: %i on %s", duration, entity.c_str());

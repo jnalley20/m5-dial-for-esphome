@@ -7,7 +7,9 @@ namespace esphome
         class HaDeviceModeLightBrightness: public esphome::shys_m5_dial::HaDeviceModePercentage {
             protected:
                 void sendValueToHomeAssistant(int value) override {
+                    ESP_LOGI("BRIGHTNESS", "sendValueToHomeAssistant called with value=%i for entity=%s", value, this->device.getEntityId().c_str());
                     haApi.turnLightOn(this->device.getEntityId(), value);
+                    ESP_LOGI("BRIGHTNESS", "turnLightOn completed");
                 }
 
             public:
@@ -45,7 +47,10 @@ namespace esphome
                 }
 
                 bool onRotary(M5DialDisplay& display, const char * direction) override {
-                    return this->defaultOnRotary(display, direction);
+                    ESP_LOGD("BRIGHTNESS", "onRotary called with direction=%s", direction);
+                    bool result = this->defaultOnRotary(display, direction);
+                    ESP_LOGD("BRIGHTNESS", "onRotary completed, result=%d, new value=%i", result, this->getValue());
+                    return result;
                 }
 
                 bool onButton(M5DialDisplay& display, const char * clickType) override {
