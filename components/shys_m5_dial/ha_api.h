@@ -28,19 +28,20 @@ namespace esphome
 
 
                 void turnLightOn(const std::string& entity, int brightness = -1, int colorValue = -1){
-                    volatile int entry_marker = 1;
-                    ESP_LOGI("HA_API", "ENTRY: turnLightOn marker=%i", entry_marker);
-                    ESP_LOGD("HA_API", "turnLightOn called: entity=%s, brightness=%i, colorValue=%i", entity.c_str(), brightness, colorValue);
-                    
-                    if(api::global_api_server == nullptr){
-                        ESP_LOGE("HA_API", "global_api_server is NULL!");
+                    ESP_LOGI("HA_API", "ENTRY turnLightOn");
+                    ESP_LOGI("HA_API", "brightness=%i", brightness);
+                    ESP_LOGI("HA_API", "About to check server");
+                    if(esphome::api::global_api_server == nullptr){
+                        ESP_LOGE("HA_API", "Server is NULL");
                         return;
                     }
-                    ESP_LOGV("HA_API", "global_api_server is valid");
+                    ESP_LOGI("HA_API", "Server valid");
                     
+                    ESP_LOGV("HA_API", "About to create HomeassistantActionRequest");
                     esphome::api::HomeassistantActionRequest resp;
                     ESP_LOGV("HA_API", "HomeassistantActionRequest created");
                     
+                    ESP_LOGV("HA_API", "About to set service");
                     resp.set_service(esphome::StringRef("light.turn_on"));
                     ESP_LOGV("HA_API", "Service set to light.turn_on");
                     
