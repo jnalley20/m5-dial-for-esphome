@@ -28,22 +28,20 @@ namespace esphome
 
 
                 void turnLightOn(const std::string& entity, int brightness = -1, int colorValue = -1){
-                    ESP_LOGI("HA_API", "Entry");
-                    
                     if(!api::global_api_server){
                         ESP_LOGE("HA_API", "No server");
                         return;
                     }
-                    ESP_LOGI("HA_API", "Has server");
                     
-                    api::HomeassistantActionRequest resp;
-                    ESP_LOGI("HA_API", "Req created");
+                    // Use the call_homeassistant_service method instead of building request manually
+                    std::map<std::string, std::string> data;
+                    data["entity_id"] = entity;
+                    if(brightness >= 0){
+                        data["brightness_pct"] = std::to_string(brightness);
+                    }
                     
-                    resp.set_service(esphome::StringRef("light.turn_on"));
-                    ESP_LOGI("HA_API", "Service set");
-                    
-                    auto &kv1 = resp.data.emplace_back();
-                    ESP_LOGI("HA_API", "Emplace done");
+                    api::global_api_server->call_homeassistant_service("light", "turn_on", data);
+                    ESP_LOGI("HA_API", "Sent light.turn_on to %s", entity.c_str());
                     
                     kv1.set_key(esphome::StringRef("entity_id"));
                     ESP_LOGV("HA_API", "Key set to entity_id");
