@@ -28,6 +28,8 @@ namespace esphome
 
 
                 void turnLightOn(const std::string& entity, int brightness = -1, int colorValue = -1){
+                    volatile int entry_marker = 1;
+                    ESP_LOGI("HA_API", "ENTRY: turnLightOn marker=%i", entry_marker);
                     ESP_LOGD("HA_API", "turnLightOn called: entity=%s, brightness=%i, colorValue=%i", entity.c_str(), brightness, colorValue);
                     
                     if(api::global_api_server == nullptr){

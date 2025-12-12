@@ -8,7 +8,12 @@ namespace esphome
             protected:
                 void sendValueToHomeAssistant(int value) override {
                     ESP_LOGI("BRIGHTNESS", "sendValueToHomeAssistant called with value=%i for entity=%s", value, this->device.getEntityId().c_str());
-                    haApi.turnLightOn(this->device.getEntityId(), value);
+                    ESP_LOGV("BRIGHTNESS", "haApi object address: %p", &haApi);
+                    ESP_LOGV("BRIGHTNESS", "About to call turnLightOn");
+                    std::string entity = this->device.getEntityId();
+                    ESP_LOGV("BRIGHTNESS", "Entity string copied: %s at address %p", entity.c_str(), &entity);
+                    ESP_LOGV("BRIGHTNESS", "Calling turnLightOn with value=%i", value);
+                    haApi.turnLightOn(entity, value);
                     ESP_LOGI("BRIGHTNESS", "turnLightOn completed");
                 }
 
