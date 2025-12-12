@@ -33,32 +33,34 @@ namespace esphome
                         return;
                     }
                     
-                    // Try creating KeyValuePair objects on stack first
-                    esphome::api::KeyValuePair kv_entity;
-                    kv_entity.set_key(esphome::StringRef("entity_id"));
-                    kv_entity.value = entity;
-                    
                     esphome::api::HomeassistantActionRequest resp;
                     resp.set_service(esphome::StringRef("light.turn_on"));
-                    resp.data.push_back(kv_entity);
+                    
+                    // Create objects on stack then copy to avoid emplace_back crash
+                    {
+                        auto temp_kv = resp.data.emplace_back();
+                        auto &kv1 = resp.data.back();
+                        kv1.set_key(esphome::StringRef("entity_id"));
+                        kv1.value = entity;
+                    }
 
                     if(brightness >= 0){
                         std::string brightness_str = std::to_string(brightness);
                         
-                        esphome::api::KeyValuePair kv_brightness;
-                        kv_brightness.set_key(esphome::StringRef("brightness_pct"));
-                        kv_brightness.value = brightness_str;
-                        resp.data.push_back(kv_brightness);
+                        auto temp_kv = resp.data.emplace_back();
+                        auto &kv2 = resp.data.back();
+                        kv2.set_key(esphome::StringRef("brightness_pct"));
+                        kv2.value = brightness_str;
                         ESP_LOGD("HA_API", "Turn ON %s with brightness: %i", entity.c_str(), brightness);
                     }
 
                     if(colorValue >= 0){
-                        esphome::api::KeyValuePair kv_color;
-                        kv_color.set_key(esphome::StringRef("hs_color"));
+                        auto temp_kv = resp.data_template.emplace_back();
+                        auto &kv3 = resp.data_template.back();
+                        kv3.set_key(esphome::StringRef("hs_color"));
                         char colorTemplate[32];
                         snprintf(colorTemplate, sizeof(colorTemplate), "{{(%d,100)|list}}", colorValue);
-                        kv_color.value = std::string(colorTemplate);
-                        resp.data_template.push_back(kv_color);
+                        kv3.value = std::string(colorTemplate);
                         ESP_LOGI("HA_API", "Turn ON %s with color template: %s", entity.c_str(), colorTemplate);
                     }
 
