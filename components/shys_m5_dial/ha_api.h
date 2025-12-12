@@ -33,53 +33,34 @@ namespace esphome
                         return;
                     }
                     
-                    // Use the call_homeassistant_service method instead of building request manually
-                    std::map<std::string, std::string> data;
-                    data["entity_id"] = entity;
-                    if(brightness >= 0){
-                        data["brightness_pct"] = std::to_string(brightness);
-                    }
+                    esphome::api::HomeassistantActionRequest resp;
+                    resp.set_service(esphome::StringRef("light.turn_on"));
                     
-                    api::global_api_server->call_homeassistant_service("light", "turn_on", data);
-                    ESP_LOGI("HA_API", "Sent light.turn_on to %s", entity.c_str());
-                    
+                    auto &kv1 = resp.data.emplace_back();
                     kv1.set_key(esphome::StringRef("entity_id"));
-                    ESP_LOGV("HA_API", "Key set to entity_id");
-                    
                     kv1.value = entity;
-                    ESP_LOGV("HA_API", "Entity ID set to %s", entity.c_str());
 
                     std::string brightness_str;
                     if(brightness >= 0){
-                        ESP_LOGV("HA_API", "Converting brightness to string");
                         brightness_str = std::to_string(brightness);
-                        ESP_LOGV("HA_API", "Brightness string created: %s", brightness_str.c_str());
                         
-                        ESP_LOGV("HA_API", "About to emplace_back for brightness_pct");
                         auto &kv2 = resp.data.emplace_back();
-                        ESP_LOGV("HA_API", "emplace_back for brightness completed");
-                        
                         kv2.set_key(esphome::StringRef("brightness_pct"));
-                        ESP_LOGV("HA_API", "Key set to brightness_pct");
-                        
                         kv2.value = brightness_str;
-                        ESP_LOGD("HA_API", "Turn ON %s with brightness: %i (str=%s)", entity.c_str(), brightness, brightness_str.c_str());
+                        ESP_LOGD("HA_API", "Turn ON %s with brightness: %i", entity.c_str(), brightness);
                     }
 
                     if(colorValue >= 0){
-                        // Verwende data_template mit Home Assistant Template-Syntax
                         auto &kv3 = resp.data_template.emplace_back();
                         kv3.set_key(esphome::StringRef("hs_color"));
-                        // Template: {{(hue,saturation)|list}} wird zu echtem Array
                         char colorTemplate[32];
                         snprintf(colorTemplate, sizeof(colorTemplate), "{{(%d,100)|list}}", colorValue);
                         kv3.value = std::string(colorTemplate);
                         ESP_LOGI("HA_API", "Turn ON %s with color template: %s", entity.c_str(), colorTemplate);
                     }
 
-                    ESP_LOGI("HA_API", "About to send light.turn_on to %s", entity.c_str());
                     api::global_api_server->send_homeassistant_action(resp);
-                    ESP_LOGI("HA_API", "Successfully sent light.turn_on to %s", entity.c_str());
+                    ESP_LOGI("HA_API", "Sent light.turn_on to %s", entity.c_str());
                 }
 
                 void turnLightOnWhite(const std::string& entity, int kelvin = -1){
