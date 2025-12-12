@@ -37,13 +37,14 @@ namespace esphome
                     }
                     ESP_LOGI("HA_API", "Server valid");
                     
-                    ESP_LOGV("HA_API", "About to create HomeassistantActionRequest");
-                    esphome::api::HomeassistantActionRequest resp;
-                    ESP_LOGV("HA_API", "HomeassistantActionRequest created");
+                    ESP_LOGI("HA_API", "Stack ptr: %p", (void*)&entity);
+                    ESP_LOGI("HA_API", "Creating request");
+                    esphome::api::HomeassistantActionRequest resp{};
+                    ESP_LOGI("HA_API", "Request created");
                     
-                    ESP_LOGV("HA_API", "About to set service");
+                    ESP_LOGI("HA_API", "Setting service");
                     resp.set_service(esphome::StringRef("light.turn_on"));
-                    ESP_LOGV("HA_API", "Service set to light.turn_on");
+                    ESP_LOGI("HA_API", "Service set");
                     
                     ESP_LOGV("HA_API", "About to emplace_back for entity_id");
                     auto &kv1 = resp.data.emplace_back();
