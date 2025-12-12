@@ -39,13 +39,8 @@ namespace esphome
                     esphome::api::HomeassistantActionRequest resp;
                     ESP_LOGV("HA_API", "HomeassistantActionRequest created");
                     
-                    try {
-                        resp.set_service(esphome::StringRef("light.turn_on"));
-                        ESP_LOGV("HA_API", "Service set to light.turn_on");
-                    } catch(...) {
-                        ESP_LOGE("HA_API", "Exception setting service!");
-                        return;
-                    }
+                    resp.set_service(esphome::StringRef("light.turn_on"));
+                    ESP_LOGV("HA_API", "Service set to light.turn_on");
                     
                     ESP_LOGV("HA_API", "About to emplace_back for entity_id");
                     auto &kv1 = resp.data.emplace_back();
