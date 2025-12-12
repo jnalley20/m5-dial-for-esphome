@@ -30,21 +30,46 @@ namespace esphome
                 void turnLightOn(const std::string& entity, int brightness = -1, int colorValue = -1){
                     ESP_LOGD("HA_API", "turnLightOn called: entity=%s, brightness=%i, colorValue=%i", entity.c_str(), brightness, colorValue);
                     
-                    esphome::api::HomeassistantActionRequest resp;
-                    resp.set_service(esphome::StringRef("light.turn_on"));
-                    ESP_LOGV("HA_API", "Service set to light.turn_on");
+                    if(api::global_api_server == nullptr){
+                        ESP_LOGE("HA_API", "global_api_server is NULL!");
+                        return;
+                    }
+                    ESP_LOGV("HA_API", "global_api_server is valid");
                     
+                    esphome::api::HomeassistantActionRequest resp;
+                    ESP_LOGV("HA_API", "HomeassistantActionRequest created");
+                    
+                    try {
+                        resp.set_service(esphome::StringRef("light.turn_on"));
+                        ESP_LOGV("HA_API", "Service set to light.turn_on");
+                    } catch(...) {
+                        ESP_LOGE("HA_API", "Exception setting service!");
+                        return;
+                    }
+                    
+                    ESP_LOGV("HA_API", "About to emplace_back for entity_id");
                     auto &kv1 = resp.data.emplace_back();
+                    ESP_LOGV("HA_API", "emplace_back completed");
+                    
                     kv1.set_key(esphome::StringRef("entity_id"));
+                    ESP_LOGV("HA_API", "Key set to entity_id");
+                    
                     kv1.value = entity;
                     ESP_LOGV("HA_API", "Entity ID set to %s", entity.c_str());
 
                     std::string brightness_str;
                     if(brightness >= 0){
+                        ESP_LOGV("HA_API", "Converting brightness to string");
                         brightness_str = std::to_string(brightness);
                         ESP_LOGV("HA_API", "Brightness string created: %s", brightness_str.c_str());
+                        
+                        ESP_LOGV("HA_API", "About to emplace_back for brightness_pct");
                         auto &kv2 = resp.data.emplace_back();
+                        ESP_LOGV("HA_API", "emplace_back for brightness completed");
+                        
                         kv2.set_key(esphome::StringRef("brightness_pct"));
+                        ESP_LOGV("HA_API", "Key set to brightness_pct");
+                        
                         kv2.value = brightness_str;
                         ESP_LOGD("HA_API", "Turn ON %s with brightness: %i (str=%s)", entity.c_str(), brightness, brightness_str.c_str());
                     }
