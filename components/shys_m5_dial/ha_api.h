@@ -28,30 +28,19 @@ namespace esphome
 
 
                 void turnLightOn(const std::string& entity, int brightness = -1, int colorValue = -1){
-                    ESP_LOGI("HA_API", "ENTRY turnLightOn");
-                    ESP_LOGI("HA_API", "brightness=%i", brightness);
-                    ESP_LOGI("HA_API", "About to check server");
-                    if(esphome::api::global_api_server == nullptr){
+                    ESP_LOGI("HA_API", "turnLightOn called");
+                    
+                    if(api::global_api_server == nullptr){
                         ESP_LOGE("HA_API", "Server is NULL");
                         return;
                     }
-                    ESP_LOGI("HA_API", "Server valid");
                     
-                    ESP_LOGI("HA_API", "Stack ptr: %p", (void*)&entity);
-                    ESP_LOGI("HA_API", "Creating request");
-                    esphome::api::HomeassistantActionRequest resp{};
-                    ESP_LOGI("HA_API", "Request created");
-                    
-                    ESP_LOGI("HA_API", "Setting service");
+                    esphome::api::HomeassistantActionRequest resp;
                     resp.set_service(esphome::StringRef("light.turn_on"));
-                    ESP_LOGI("HA_API", "Service set");
                     
-                    ESP_LOGI("HA_API", "Free heap: %u", ESP.getFreeHeap());
-                    ESP_LOGI("HA_API", "Max alloc: %u", ESP.getMaxAllocHeap());
-                    
-                    ESP_LOGI("HA_API", "Calling emplace_back");
+                    ESP_LOGI("HA_API", "About to add entity_id");
                     auto &kv1 = resp.data.emplace_back();
-                    ESP_LOGI("HA_API", "emplace_back done");
+                    ESP_LOGI("HA_API", "Entity emplace done");
                     
                     kv1.set_key(esphome::StringRef("entity_id"));
                     ESP_LOGV("HA_API", "Key set to entity_id");
