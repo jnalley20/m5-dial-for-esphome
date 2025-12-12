@@ -46,8 +46,11 @@ namespace esphome
                     resp.set_service(esphome::StringRef("light.turn_on"));
                     ESP_LOGI("HA_API", "Service set");
                     
-                    ESP_LOGI("HA_API", "resp.data size=%u", resp.data.size());
-                    ESP_LOGI("HA_API", "resp.data addr=%p", &resp.data);
+                    ESP_LOGI("HA_API", "Free heap: %u", ESP.getFreeHeap());
+                    ESP_LOGI("HA_API", "Reserving space in vector");
+                    resp.data.reserve(brightness >= 0 ? 2 : 1);
+                    ESP_LOGI("HA_API", "Reserve complete");
+                    
                     ESP_LOGI("HA_API", "Calling emplace_back");
                     auto &kv1 = resp.data.emplace_back();
                     ESP_LOGI("HA_API", "emplace_back done");
