@@ -47,9 +47,7 @@ namespace esphome
                     ESP_LOGI("HA_API", "Service set");
                     
                     ESP_LOGI("HA_API", "Free heap: %u", ESP.getFreeHeap());
-                    ESP_LOGI("HA_API", "Reserving space in vector");
-                    resp.data.reserve(brightness >= 0 ? 2 : 1);
-                    ESP_LOGI("HA_API", "Reserve complete");
+                    ESP_LOGI("HA_API", "Max alloc: %u", ESP.getMaxAllocHeap());
                     
                     ESP_LOGI("HA_API", "Calling emplace_back");
                     auto &kv1 = resp.data.emplace_back();
