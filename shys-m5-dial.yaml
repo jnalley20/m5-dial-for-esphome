@@ -25,6 +25,7 @@ external_components:
       url: https://github.com/jnalley20/m5-dial-for-esphome/
       ref: main
     components: [shys_m5_dial]
+    refresh: 1s
 
 dashboard_import:
   package_import_url: github://jnalley20/m5-dial-for-esphome/shys-m5-dial.yaml@main
